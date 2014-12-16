@@ -5,19 +5,19 @@
 #define chat_h
 
 #ifdef _WIN32
-#include <windows.h>
-
+ #include <stdio.h>
+ #include <winsock2.h>
+ #include <stdlib.h>
 #elif __linux__
  #include <stdio.h>
  #include <sys/socket.h>
  #include <arpa/inet.h>
- #include <arpa/inet.h>
  #include <stdlib.h>
  #include <unistd.h>
  #include <netinet/in.h>
- #include <mutex>
 #endif
 
+#include <mutex>
 #include <string.h>
 
 #define BUFFSIZE 128
