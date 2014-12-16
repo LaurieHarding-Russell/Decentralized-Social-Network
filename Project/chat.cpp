@@ -99,6 +99,10 @@ void Chat::endMessageCheckLoop(){
 /*
 
 */
-Chat::~Chat(){ 
-  close(sock); // Disconnect from socket
+Chat::~Chat(){
+  #ifdef _WIN32
+  closesocket(sock);
+  #elif __linux__
+  close(sock);	// Disconnect
+  #endif
 }

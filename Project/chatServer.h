@@ -9,8 +9,9 @@ a reason for haveing multiple instances of the host module.
 #define chatServer_h
 
 #ifdef _WIN32
-#include <windows.h>
-
+ #include <stdio.h>
+ #include <winsock2.h>
+ #include <stdlib.h>
 #elif __linux__
  #include <stdio.h>
  #include <sys/socket.h>
@@ -18,10 +19,10 @@ a reason for haveing multiple instances of the host module.
  #include <stdlib.h>
  #include <unistd.h>
  #include <netinet/in.h>
- #include <thread>
- #include <mutex>
 #endif
 
+#include <thread>	// Not supported in windows... maybe.
+#include <mutex>
 #include <string.h>
 #define BUFFSIZE 128
 #define HOSTSOCK 8000   // Hope that it isn't being used. Needs researching.
