@@ -27,7 +27,7 @@ Each and ever person will be a server and a client with out doing any work!
 
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[]){
   ChatServer* host; // Start host right away.
   host = new ChatServer();
   thread hostThread(&ChatServer::serverLoop,host);
@@ -39,9 +39,15 @@ int main(){
   int choice=0;
   string temp;
   string name;
-
   cout << "Resources Loaded!"<<endl;
+
+  // graphic set up...
+  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
+  Gtk::Window mainWindow;
+  mainWindow.set_default_size(200, 200);
   do{
+
+  /* 
     if(host->serverRunning()){
       cout << "**** Decentralized Social Network ****" <<endl;
     }else{
@@ -125,8 +131,8 @@ int main(){
     default:
       cout << "Not an option" <<endl;
       break;
-    }
-  }while(exit);
+      }*/
+      }while(exit);
   // ******************* Exit ***************************
   cout << "Release the magic imps"<<endl;
   host->stopServer(); // Need a way to stop accept connection...
@@ -140,5 +146,6 @@ int main(){
   }
   delete host;
   cout << "Dragons fed..." <<endl<<endl;
-  return 0; // Should get Aborted since threads arn't joined.
+  return app->run(mainWindow); // Should get Aborted since threads arn't joined.
+  return 0;
 }
