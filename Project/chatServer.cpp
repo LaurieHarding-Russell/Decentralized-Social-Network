@@ -24,7 +24,11 @@ void ChatServer::handleClient(int sock, int me) {
     rLock.lock();
   }
   rLock.unlock();
-  close(sock);
+  #ifdef _WIN32
+  closesocket(sock);
+  #elif __linux__
+  close(sock);	// Disconnect
+  #endif
 }
 
 std::string ChatServer::getMessages(int id){
