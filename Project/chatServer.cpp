@@ -72,11 +72,13 @@ void ChatServer::serverLoop(){
     threadIds[lp1].join();
   }
 }
+
 void ChatServer::stopServer(){
   rLock.lock();
   running = false;
   rLock.unlock();
 }
+
 bool ChatServer::serverRunning(){
   bool temp;
   rLock.lock();
