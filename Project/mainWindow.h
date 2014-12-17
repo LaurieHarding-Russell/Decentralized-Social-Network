@@ -12,16 +12,30 @@ public:
   virtual ~MainWindow();
 
 protected:
-  //Signal handlers:
+  //**** Signal handlers**** 
   void logIn();
+  // Userpage
+  void connectHandler();
 
   //Member widgets:
-  Gtk::Box container; // Verticle array
+  Gtk::Notebook frame; // Switch pages
+  Gtk::Box logInFrame; // Verticle array
+  Gtk::Box userFrame;
+  // ******** Login *********
   Gtk::Label userL;
   Gtk::Entry username;
   Gtk::Label passL;
   Gtk::Entry password;
   Gtk::Button logInB; // log in
+  // ******* User Page **********
+   Gtk::Label userPhoto;
+   Gtk::Box options;
+   Gtk::Button connect,cellForward,finder,logout;
+   Gtk::Label otherStuff;
+
+ private:
+  std::string myUsername;
+  std::string myPassword;
 };
 
 #endif
