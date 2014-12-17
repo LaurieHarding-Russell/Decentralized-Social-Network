@@ -10,16 +10,10 @@ Each and ever person will be a server and a client with out doing any work!
 // OS dependent includes
 
 #ifdef _WIN32
-#include <windows.h>
 
 #elif __linux__
-#include <stdio.h>
-#include <thread>   // Seems more oop like then pthreads
-#endif
 
-// chat
-#include "chatServer.h"
-#include "chat.h"
+#endif
 
 // Graphics
 #include <iostream>  // Until we make a gui
@@ -29,15 +23,6 @@ Each and ever person will be a server and a client with out doing any work!
 using namespace std;
 
 int main(int argc, char *argv[]){
-  //****************** Server stuff ******************************
-  ChatServer* host; // Start host right away.
-  host = new ChatServer();
-  thread hostThread(&ChatServer::serverLoop,host);
-  Chat* clients[MAXCONNECT];
-  thread clientThreads[MAXCONNECT];
-  int current=0;
-  cout << "Resources Loaded!"<<endl;
-
   // ***************** graphic set up *****************************
   Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
   MainWindow mainW;
@@ -51,15 +36,6 @@ int main(int argc, char *argv[]){
       cout << "be ready. If this persists the sock may be in use."<< endl;
       cout << "***************************************************"<<endl;
     }
-    cout << "Your IP address is:" << ""<<" Local: " <<  "" <<endl;
-    cout << "Enter the number beside the command you want"<<endl;
-    cout << "1. Connect to other node (chat)" << endl; 
-    cout << "2. New message?" <<endl;
-    cout << "3. send message" <<endl;
-    cout << "4. View others profile" <<endl;
-    cout << "5. Connect to finder server"<< endl;
-    cout << "6. exit" << endl;
-    cin >> choice;
     switch(choice){
     case 1:
       cout << "What is their IP address?"<<endl;
@@ -115,32 +91,6 @@ int main(int argc, char *argv[]){
       }
     }
     break;
-    case 4:
-      
-      break;
-    case 5:
-      break;
-    case 6:
-      exit = false;
-      break;
-    default:
-      cout << "Not an option" <<endl;
-      break;
       }*/
-
-  // ******************* Exit ***************************
-  cout << "Release the magic imps"<<endl;
-  host->stopServer(); // Need a way to stop accept connection...
-  // hostThread.join();  // can't join until accept connection is cancelled.
-  cout << "Released Mr. H" << endl;
-  for(int lp1=0;lp1!=current;lp1++){
-    cout << "Released" << lp1<< endl;
-    clients[lp1]->endMessageCheckLoop(); // Stoping the loop
-    //clientThreads[current].join();            // Waiting for thread
-    //delete clients[lp1];  // causes system error
-  }
-  delete host;
-  cout << "Dragons fed..." <<endl<<endl;
   return app->run(mainW); // Should get Aborted since threads arn't joined.
-  return 0;
 }
