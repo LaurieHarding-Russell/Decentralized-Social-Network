@@ -1,5 +1,6 @@
 #include "mainWindow.h"
-#include <iostream> // Testing! Purposes...
+#include <iostream> 
+
 MainWindow::MainWindow():
   logInFrame(Gtk::ORIENTATION_VERTICAL),
   userFrame(Gtk::ORIENTATION_VERTICAL),
@@ -36,7 +37,7 @@ MainWindow::MainWindow():
 
   //********************** User's Page *********************
   // user photo
-  userPhoto.set_label("Username");
+  userPhoto.set_label("User photo");
   userFrame.pack_start(userPhoto,Gtk::PACK_SHRINK);
 
   userName.set_label("Username");
@@ -79,14 +80,16 @@ void MainWindow::logIn(){
   //****************** Server stuff ******************************
   host = new ChatServer();
   hostThread= std::thread(&ChatServer::serverLoop,host);
-  current=0;
   // Graphic stuff 
   set_title("User Page");
+  userName.set_label(myUsername);
   frame.set_current_page(1);
 }
 
 void MainWindow::connectH(){
-  
+  ConnectWindow *newBox = new ConnectWindow();
+  newBox->show();
+  chatBoxes.push_back(newBox);
 }
 
 void MainWindow::logoutH(){ // Very Broken
@@ -96,12 +99,12 @@ void MainWindow::logoutH(){ // Very Broken
   host->stopServer(); // Need a way to stop accept connection...
   // hostThread.join();  // can't join until accept connection is cancelled.
   std::cout << "Released Mr. H\n";
-  for(int lp1=0;lp1!=current;lp1++){
-    std::cout << "Released" << lp1<< std::endl;
-    clients[lp1]->endMessageCheckLoop(); // Stoping the loop
+  //for(int lp1=0;lp1!=current;lp1++){
+  //  std::cout << "Released" << lp1<< std::endl;
+  //  clients[lp1]->endMessageCheckLoop(); // Stoping the loop
     //clientThreads[current].join();            // Waiting for thread
     //delete clients[lp1];  // causes system error
-  }
+  //}
   delete host;
   std::cout << "Dragons fed..." <<std::endl<<std::endl;
   set_title("Anti-Social Network");

@@ -1,6 +1,7 @@
-#ifndef Main_Window_h
-#define Main_Window_h
+#ifndef MainWindowh
+#define MainWindowh
 
+#include <list>
 // chat
 #include "chatServer.h"
 #include "chat.h"
@@ -8,6 +9,8 @@
 
 #include <gtkmm.h>
 #include <gtkmm/window.h>
+#include "connectWindow.h"
+
 
 class MainWindow : public Gtk::Window{
 
@@ -40,8 +43,11 @@ protected:
    
  private:
    ChatServer* host; // Start host right away.
+   ConnectWindow chatBox;
+   
+   std::list<ConnectWindow*> chatBoxes;
    Chat* clients[MAXCONNECT];
-   int current;
+   
    std::thread hostThread;
    std::thread clientThreads[MAXCONNECT];
 
