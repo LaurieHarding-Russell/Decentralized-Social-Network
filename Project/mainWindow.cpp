@@ -73,8 +73,8 @@ MainWindow::MainWindow():
 }
 // ******************** Handers ***************************
 void MainWindow::logIn(){
-  myUsername= username.get_buffer();
-  myPassword= password.get_buffer();
+  myUsername= username.get_text();
+  myPassword= password.get_text();
   // Hashing stuff to go here
 
   //****************** Server stuff ******************************
@@ -99,12 +99,6 @@ void MainWindow::logoutH(){ // Very Broken
   host->stopServer(); // Need a way to stop accept connection...
   // hostThread.join();  // can't join until accept connection is cancelled.
   std::cout << "Released Mr. H\n";
-  //for(int lp1=0;lp1!=current;lp1++){
-  //  std::cout << "Released" << lp1<< std::endl;
-  //  clients[lp1]->endMessageCheckLoop(); // Stoping the loop
-    //clientThreads[current].join();            // Waiting for thread
-    //delete clients[lp1];  // causes system error
-  //}
   delete host;
   std::cout << "Dragons fed..." <<std::endl<<std::endl;
   set_title("Anti-Social Network");

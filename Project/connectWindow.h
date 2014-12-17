@@ -3,6 +3,8 @@
 
 #include <gtkmm.h>
 #include <gtkmm/window.h>
+#include <thread>
+#include "chat.h"
 
 class ConnectWindow : public Gtk::Window{
 public:
@@ -10,6 +12,8 @@ public:
   virtual ~ConnectWindow();
 protected:
   //Signal Handlers
+  void connect();
+  void sendMessage();
   // Layout
   Gtk::Notebook frame; // Switch pages
   Gtk::Box connectFrame;
@@ -22,12 +26,16 @@ protected:
   Gtk::Entry nameE;
   Gtk::Button connectB; 
   // ********* message **********
-  Glib::RefPtr<Gtk::TextBuffer> conversation;
+  Gtk::ScrolledWindow messageScroll;
+  Gtk::TextView conversation;
+  //Glib::RefPtr<Gtk::TextBuffer> conversationB;
   Gtk::Entry messageE;
   Gtk::Button sendB;
   // ******* User Page ************
-  
  private:
-
+  Chat* client;
+  std::thread clientThread;
+  std::string name;
+  std::string ip;
 };
 #endif
