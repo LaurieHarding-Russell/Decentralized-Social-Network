@@ -25,33 +25,8 @@ using namespace std;
 int main(int argc, char *argv[]){
   // ***************** graphic set up *****************************
   Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
-  MainWindow mainW;
-  
-   /* 
-    if(host->serverRunning()){
-      cout << "**** Decentralized Social Network ****" <<endl;
-    }else{
-      cout << "**** Anti-social Network **** <-- Host not running."<<endl;
-      cout << "Enter 7 and press enter. The Host thread might not"<<endl;
-      cout << "be ready. If this persists the sock may be in use."<< endl;
-      cout << "***************************************************"<<endl;
-    }
-    switch(choice){
-    case 1:
-      cout << "What is their IP address?"<<endl;
-      cin >>temp;
-      cout << "What is their name?" << endl;
-      cin >> name;
-      clients[current] = new Chat(temp,name);
-      if(clients[current]->getState()==20){ // Connect correctly?
-	cout << "Connected!"<< endl;
-	clientThreads[current] = thread(&Chat::messageCheckLoop,clients[current]);
-	current++;
-      }else{
-	cout << "Failed to connect"<<endl;
-	delete clients[current];
-      }
-      break;
+  MainWindow mainW; 
+/*
     case 2:
     {
       int id=0;

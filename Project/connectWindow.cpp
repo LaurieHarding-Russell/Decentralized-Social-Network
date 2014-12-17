@@ -74,6 +74,10 @@ void ConnectWindow::sendMessage(){
   std::string getMessage = messageE.get_text();
   messageE.set_text("");
   //conversation.insert_text(getMessage);
+  float check=client->sendMessage(getMessage);
+  if(check!=1){
+    std::cout << "Message sent ="<< check<<"%"<<std::endl;
+  }
 }
 // ****************************************************
 ConnectWindow::~ConnectWindow(){
