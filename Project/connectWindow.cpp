@@ -56,15 +56,21 @@ ConnectWindow::ConnectWindow():
   frame.append_page(userPFrame, "Users page");
   show_all_children();
 }
+
 // ***********************************************
 // *************** Host connected ****************
-ConnectWindow::ConnectWindow(ChatServer* h, int num):
+ConnectWindow::ConnectWindow(ChatServer* h, int num,std::string temp):
 talkFrame(Gtk::ORIENTATION_VERTICAL),
 userPFrame(Gtk::ORIENTATION_VERTICAL){
+  std::cout << temp;
+  set_default_size(300, 300); // size
+  set_border_width(5);// border
+  add(frame);
   // Message Box
   messageScroll.set_border_width(5);
   messageScroll.set_size_request(70,50);
   conversation.set_editable(false);
+  conversation.get_buffer()->set_text(temp);
   messageScroll.add(conversation);
   messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
@@ -75,10 +81,13 @@ userPFrame(Gtk::ORIENTATION_VERTICAL){
   talkFrame.pack_start(messageE,Gtk::PACK_SHRINK);
   // Send
   sendB.set_label("Send");
-  //sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage));
+  talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
+  sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage2));
   frame.append_page(talkFrame, "Message");
   frame.append_page(userPFrame, "Users page");
+
   show_all_children();
+
   // Connection Part
   host=h;
   id = num;
@@ -95,26 +104,34 @@ void ConnectWindow::connect(){
     clientThread = std::thread(&Chat::messageCheckLoop,client);
     sigc::slot<bool>my_slot = sigc::mem_fun(*this,&ConnectWindow::update);
     Glib::signal_timeout().connect(my_slot, 100); // 10x a second
+    frame.set_current_page(1);
   }else{
     std::cout << "Failed to connect"<<std::endl;
     delete client;
-  }
+    }
 }
 
 void ConnectWindow::sendMessage(){
-  std::string getMessage = messageE.get_text();
+  std::string getMessage = messageE.get_text()+'\n';
   messageE.set_text("");
-  //conversation.insert_text(getMessage);
+  conversation.get_buffer()->insert_at_cursor(getMessage);
   float check=client->sendMessage(getMessage);
   if(check!=1){
     std::cout << "Message sent ="<< check<<"%"<<std::endl;
   }
+}
+void ConnectWindow::sendMessage2(){
+  std::string getMessage = messageE.get_text()+'\n';
+  messageE.set_text("");
+  conversation.get_buffer()->insert_at_cursor(getMessage);
+  host->sendMessage(id,getMessage);
 }
 // *********** timer events *****************
 bool ConnectWindow::update(){
   std::string incoming=client->getMessage();
   if(incoming!=""){
     std::cout <<incoming;
+    conversation.get_buffer()->insert_at_cursor(incoming);
   }
   return true;
 }
@@ -122,6 +139,7 @@ bool ConnectWindow::update2(){
   std::string incoming= host->getMessages(id);
   if(incoming!=""){
     std::cout <<incoming;
+    conversation.get_buffer()->insert_at_cursor(incoming);
   }
   return true;
 }

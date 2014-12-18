@@ -108,8 +108,10 @@ void MainWindow::logoutH(){ // Very Broken
 }
 // timer
 bool MainWindow::update(){
-  if(host->getMessages(current)!=""){
-    ConnectWindow *newBox = new ConnectWindow(host,current);
+  std::string temp=host->getMessages(current);
+  std::cout<<temp;
+  if(temp!=""){
+    ConnectWindow *newBox = new ConnectWindow(host,current,temp);
     newBox->show();
     chatBoxes.push_back(newBox);
     current++;

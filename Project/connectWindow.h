@@ -10,12 +10,13 @@
 class ConnectWindow : public Gtk::Window{
 public:
   ConnectWindow();
-  ConnectWindow(ChatServer* con,int current);
+  ConnectWindow(ChatServer* con,int current,std::string temp);
   virtual ~ConnectWindow();
 protected:
   //Signal Handlers
   void connect();
   void sendMessage();
+  void sendMessage2();
   bool update();
   bool update2();
   // Layout
