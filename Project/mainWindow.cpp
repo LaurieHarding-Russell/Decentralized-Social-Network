@@ -30,7 +30,6 @@ MainWindow::MainWindow():
   password.select_region(0, 50);
   logInFrame.pack_start(password, Gtk::PACK_SHRINK);
 
-
   //* signals
   logInB.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::logIn));
   logInFrame.pack_start(logInB,Gtk::PACK_SHRINK);
@@ -73,8 +72,8 @@ MainWindow::MainWindow():
 }
 // ******************** Handers ***************************
 void MainWindow::logIn(){
-  myUsername= username.get_buffer();
-  myPassword= password.get_buffer();
+  myUsername= username.get_text();
+  myPassword= password.get_text();
   // Hashing stuff to go here
 
   //****************** Server stuff ******************************
@@ -84,6 +83,9 @@ void MainWindow::logIn(){
   set_title("User Page");
   userName.set_label(myUsername);
   frame.set_current_page(1);
+  // host timer
+  sigc::slot<bool>my_slot = sigc::mem_fun(*this,&MainWindow::update);
+  Glib::signal_timeout().connect(my_slot, 100); // 10x a second
 }
 
 void MainWindow::connectH(){
@@ -99,16 +101,20 @@ void MainWindow::logoutH(){ // Very Broken
   host->stopServer(); // Need a way to stop accept connection...
   // hostThread.join();  // can't join until accept connection is cancelled.
   std::cout << "Released Mr. H\n";
-  //for(int lp1=0;lp1!=current;lp1++){
-  //  std::cout << "Released" << lp1<< std::endl;
-  //  clients[lp1]->endMessageCheckLoop(); // Stoping the loop
-    //clientThreads[current].join();            // Waiting for thread
-    //delete clients[lp1];  // causes system error
-  //}
   delete host;
   std::cout << "Dragons fed..." <<std::endl<<std::endl;
   set_title("Anti-Social Network");
   frame.set_current_page(1);
+}
+// timer
+bool MainWindow::update(){
+  if(host->getMessages(current)!=""){
+    ConnectWindow *newBox = new ConnectWindow(host,current);
+    newBox->show();
+    chatBoxes.push_back(newBox);
+    current++;
+  }
+  return true;
 }
 MainWindow::~MainWindow(){
  // ******************* Exit ***************************

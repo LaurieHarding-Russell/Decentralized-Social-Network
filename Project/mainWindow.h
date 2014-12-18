@@ -24,6 +24,9 @@ protected:
   // Userpage
   void connectH();
   void logoutH();
+  //timer
+  bool update();
+  int current=0;
   //Member widgets:
   Gtk::Notebook frame; // Switch pages
   Gtk::Box logInFrame; // Verticle array
