@@ -27,45 +27,10 @@ int main(int argc, char *argv[]){
   Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
   MainWindow mainW; 
 /*
-    case 2:
-    {
-      int id=0;
-      string who;
-      cout << "Id number (will replace soon)"<<endl;
-      cin >> id;
-      cout << "Did you connect to them?" << endl;
-      cin >> who;
-      if (who=="yes"||who=="true"||who=="t"||who=="0"){
 	cout << clients[id]->getMessage();
-      }else{
 	cout << host->getMessages(id);
-      }
-      cout << endl;
-     }
-    break;
-    case 3:
-    {
-      int id;
-      string who;
-      string message;
-      cout << "id number"<< endl;
-      cin >> id;
-      cout << "Did you connect to them?"<<endl;
-      cin >> who;
-      cout << "message?"<< endl;
-      cin.ignore(1,'\n');
-      getline (cin,message);
-      if(who=="yes"||who=="true"||who=="t"||who=="0"){
 	float check =clients[id]->sendMessage(message);
-	cout << check*message.length() <<endl;
-	if(check!=1){
-	  cout << "Message sent ="<< check<<"%"<<endl;
-	}
-      }else{
 	host->sendMessage(id,message);
-      }
-    }
-    break;
-      }*/
+*/
   return app->run(mainW); // Should get Aborted since threads arn't joined.
 }

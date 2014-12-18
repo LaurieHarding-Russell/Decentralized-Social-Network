@@ -30,7 +30,6 @@ MainWindow::MainWindow():
   password.select_region(0, 50);
   logInFrame.pack_start(password, Gtk::PACK_SHRINK);
 
-
   //* signals
   logInB.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::logIn));
   logInFrame.pack_start(logInB,Gtk::PACK_SHRINK);
@@ -84,6 +83,9 @@ void MainWindow::logIn(){
   set_title("User Page");
   userName.set_label(myUsername);
   frame.set_current_page(1);
+  // host timer
+  sigc::slot<bool>my_slot = sigc::mem_fun(*this,&MainWindow::update);
+  Glib::signal_timeout().connect(my_slot, 100); // 10x a second
 }
 
 void MainWindow::connectH(){
@@ -103,6 +105,16 @@ void MainWindow::logoutH(){ // Very Broken
   std::cout << "Dragons fed..." <<std::endl<<std::endl;
   set_title("Anti-Social Network");
   frame.set_current_page(1);
+}
+// timer
+bool MainWindow::update(){
+  if(host->getMessages(current)!=""){
+    ConnectWindow *newBox = new ConnectWindow(host,current);
+    newBox->show();
+    chatBoxes.push_back(newBox);
+    current++;
+  }
+  return true;
 }
 MainWindow::~MainWindow(){
  // ******************* Exit ***************************

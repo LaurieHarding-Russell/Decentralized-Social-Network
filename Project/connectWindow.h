@@ -5,15 +5,19 @@
 #include <gtkmm/window.h>
 #include <thread>
 #include "chat.h"
+#include "chatServer.h"
 
 class ConnectWindow : public Gtk::Window{
 public:
   ConnectWindow();
+  ConnectWindow(ChatServer* con,int current);
   virtual ~ConnectWindow();
 protected:
   //Signal Handlers
   void connect();
   void sendMessage();
+  bool update();
+  bool update2();
   // Layout
   Gtk::Notebook frame; // Switch pages
   Gtk::Box connectFrame;
@@ -28,12 +32,13 @@ protected:
   // ********* message **********
   Gtk::ScrolledWindow messageScroll;
   Gtk::TextView conversation;
-  //Glib::RefPtr<Gtk::TextBuffer> conversationB;
   Gtk::Entry messageE;
   Gtk::Button sendB;
   // ******* User Page ************
  private:
   Chat* client;
+  ChatServer* host;
+  int id;
   std::thread clientThread;
   std::string name;
   std::string ip;
