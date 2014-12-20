@@ -29,7 +29,7 @@ class Chat{
   Chat(std::string address, std::string name);// Start a connection
   ~Chat();
 
-  float sendMessage(std::string message);
+  int sendMessage(std::string message);
   void messageCheckLoop(); // Checks for new messages
   int getState(); // 0= no connection,1= tried,20 = good, 30 = message failed
   void endMessageCheckLoop();

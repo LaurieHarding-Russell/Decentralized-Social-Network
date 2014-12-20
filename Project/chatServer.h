@@ -24,11 +24,19 @@ a reason for haveing multiple instances of the host module.
 #include <thread>	// Not supported in windows... maybe.
 #include <mutex>
 #include <string.h>
+#include <list>
 #define BUFFSIZE 128
 #define HOSTSOCK 8000   // Hope that it isn't being used. Needs researching.
 
 // No one talks to more than a 100 people at once... right?
 #define MAXCONNECT 100
+/*struct message{
+  std::thread threadId;
+  int clientSock;
+  std::string messages;
+  std::mutex messageLock;
+  bool sConnected;
+};*/
 
 class ChatServer{
 public:
@@ -36,19 +44,22 @@ public:
   void serverLoop();
   void stopServer();
   bool serverRunning(); // Is the server running?
-  std::string getMessages(int id);// Will be replaceing this entirely.
-  bool sendMessage(int id,std::string message);
+  bool socketConnected(int id);
+  std::string getMessages(int id);
+  int sendMessage(int id,std::string message);
   ~ChatServer();
 private:
   std::mutex rLock; // Locks running. 
-  bool running;     // Is the Host running?
-  std::thread threadIds[MAXCONNECT];   // One thread per conversation
+  bool running;     // Is the Host running?  
   void handleClient(int sock, int me); // threaded
   struct sockaddr_in server, client;
   int serverSock,clientSockInit;
+  std::thread threadIds[MAXCONNECT];   // One thread per conversation
   int clientSock[MAXCONNECT];
   std::string messages[MAXCONNECT];
   std::mutex messageLock[MAXCONNECT];
+  bool sConnected[MAXCONNECT]; // If the socket is connected client
+  //std::list<message> connections;  // Or vector... Will have to think about this... 
   int current;// Current connection number
 };
 

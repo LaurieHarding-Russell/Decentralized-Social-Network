@@ -62,7 +62,6 @@ ConnectWindow::ConnectWindow():
 ConnectWindow::ConnectWindow(ChatServer* h, int num,std::string temp):
 talkFrame(Gtk::ORIENTATION_VERTICAL),
 userPFrame(Gtk::ORIENTATION_VERTICAL){
-  std::cout << temp;
   set_default_size(300, 300); // size
   set_border_width(5);// border
   add(frame);
@@ -98,6 +97,9 @@ userPFrame(Gtk::ORIENTATION_VERTICAL){
 void ConnectWindow::connect(){
   name = nameE.get_text();
   ip = ipAddressE.get_text();
+  //if (client!=NULL){ // Delete client if new connection
+  //  delete client;
+  //}
   client = new Chat(ip,name);
   if(client->getState()==20){ // Connect correctly?
     std::cout << "Connected!"<< std::endl;
@@ -116,31 +118,31 @@ void ConnectWindow::sendMessage(){
   messageE.set_text("");
   conversation.get_buffer()->insert_at_cursor(getMessage);
   float check=client->sendMessage(getMessage);
-  if(check!=1){
-    std::cout << "Message sent ="<< check<<"%"<<std::endl;
-  }
 }
 void ConnectWindow::sendMessage2(){
   std::string getMessage = messageE.get_text()+'\n';
+  std::cout << getMessage;
   messageE.set_text("");
   conversation.get_buffer()->insert_at_cursor(getMessage);
-  host->sendMessage(id,getMessage);
+  std::cout << host->sendMessage(id,getMessage)<< std::endl;
 }
 // *********** timer events *****************
 bool ConnectWindow::update(){
   std::string incoming=client->getMessage();
   if(incoming!=""){
-    std::cout <<incoming;
+    //  std::cout <<incoming;
     conversation.get_buffer()->insert_at_cursor(incoming);
   }
+  //std::cout <<client->getState()<<std::endl;
   return true;
 }
 bool ConnectWindow::update2(){
   std::string incoming= host->getMessages(id);
   if(incoming!=""){
-    std::cout <<incoming;
+    //  std::cout <<incoming;
     conversation.get_buffer()->insert_at_cursor(incoming);
   }
+  std::cout <<host->socketConnected(id)<<std::endl;
   return true;
 }
 // ****************************************************

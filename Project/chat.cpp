@@ -31,8 +31,8 @@ Chat::Chat(std::string a, std::string n){
 
   }  
 }
-/*Returns percent of the message that got through */
-float Chat::sendMessage(std::string message){ 
+/*Returns number of bytes that got through */
+int Chat::sendMessage(std::string message){ 
   float good;
   rLock.lock();
   if(failedState>=20){ // Fatal errors are bellow 20... (ex. failed to connect equals 0 or 1)
@@ -49,18 +49,17 @@ float Chat::sendMessage(std::string message){
 The main gives this a thread to constantly check for new messages 
 */
 void Chat::messageCheckLoop(){
-  bool connected=true;
   char buffer[BUFFSIZE];
   int size;
   rLock.lock();
-  while(connected&&failedState>=20){ 
+  while(failedState>=20){ 
     rLock.unlock();
     if((size=recv(sock, buffer, BUFFSIZE-1, 0)) < 1) {
       // No new bytes...
 
     }else{ // NEW STUFF!
       if(strcmp(buffer, "~/exit")){ // On exit.
-	connected = false;
+	failedState==1;
       }
       messageLock.lock();
       message =message +buffer;
@@ -94,7 +93,9 @@ std::string Chat::getMessage(){
 
 // IMPORTANT! Don't forget! Don't even think to forget. If you forget it lives.
 void Chat::endMessageCheckLoop(){
+  rLock.lock();
   failedState =0; // End it.
+  rLock.unlock();
 }
 /*
 

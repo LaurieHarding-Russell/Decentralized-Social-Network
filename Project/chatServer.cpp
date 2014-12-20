@@ -4,33 +4,37 @@
 
 /* There can only be one! Well, there should only be one. This allows other computers to connect.*/
 ChatServer::ChatServer(){
-  current =0;
+  current =0; // current number of connections
 }
 /*
-
+The function polls a single sockets recieved data.
 */
 void ChatServer::handleClient(int sock, int me) {
   char buffer[BUFFSIZE];
-  bool loop =true;
+  sConnected[me] =true;
   int size=0;
   rLock.lock();
-  while(loop&&running){
+  while(sConnected[me]&&running){ // Runs while server is running and client connected.
     rLock.unlock();
-    if ((size = recv(sock, buffer, BUFFSIZE, 0)) > 0) {
+    if ((size = recv(sock, buffer, BUFFSIZE, 0)) > 0) { // Check for data
       messageLock[me].lock();
-      messages[me]= messages[me]+buffer;
+      messages[me]= messages[me]+buffer; // Put in buffer.
       messageLock[me].unlock();
     }
     rLock.lock();
   }
   rLock.unlock();
-  #ifdef _WIN32
+#ifdef _WIN32
   closesocket(sock);
-  #elif __linux__
+#elif __linux__
   close(sock);	// Disconnect
-  #endif
+#endif
 }
-
+/*socket connected getter.*/
+bool ChatServer::socketConnected(int id){
+  return sConnected[id];
+}
+/* Get Message */
 std::string ChatServer::getMessages(int id){
   std::string getM;
   messageLock[id].lock();
@@ -39,8 +43,13 @@ std::string ChatServer::getMessages(int id){
   messageLock[id].unlock();
   return getM;
 }
-bool ChatServer::sendMessage(int id, std::string message){
-  return (send(clientSock[id], message.c_str(), message.length(), 0)!=message.length());
+
+/*
+ Send Message.
+Returns number of bytes sent.
+*/
+int ChatServer::sendMessage(int id, std::string message){
+  return (send(clientSock[id], message.c_str(), message.length(), 0));
 }
 /*
 Server Host that clients initially connect too.
@@ -59,10 +68,10 @@ void ChatServer::serverLoop(){
 	while(running){
 	  rLock.unlock();
 	  unsigned int clientlen = sizeof(client);
-	  if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing clinet info
+	  if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing client info
 	    inet_ntoa(client.sin_addr);
-	    threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current);
-	    clientSock[current] = clientSockInit;
+	    threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current); // Start socket polling thread
+	    clientSock[current] = clientSockInit; // Sockets handle.
 	    current++; 
 	  }
 	  rLock.lock();
@@ -82,7 +91,7 @@ void ChatServer::stopServer(){
   running = false;
   rLock.unlock();
 }
-
+/* Returns true if server is still running */
 bool ChatServer::serverRunning(){
   bool temp;
   rLock.lock();

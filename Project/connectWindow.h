@@ -35,7 +35,7 @@ protected:
   Gtk::TextView conversation;
   Gtk::Entry messageE;
   Gtk::Button sendB;
-  // ******* User Page ************
+  // ******* User Page ************ 
  private:
   Chat* client;
   ChatServer* host;

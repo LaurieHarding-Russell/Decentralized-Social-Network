@@ -15,7 +15,7 @@ chat.o : chat.cpp chat.h
 	${CC} ${CFLAGS} -c chat.cpp 
 
 chatServer.o : chatServer.cpp chatServer.h
-	${CC} ${CFLAGS} -c chatServer.cpp 
+	${CC} ${CFLAGS} -c chatServer.cpp
 
 clean: 
 	rm DSN *.o
