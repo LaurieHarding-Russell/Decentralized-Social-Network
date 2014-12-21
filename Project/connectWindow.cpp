@@ -49,6 +49,23 @@ ConnectWindow::ConnectWindow():
   sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage));
   talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
   //********* User Page Layout *****************
+  // user photo
+  userPhotoName = "";
+  // <-------  Load in photo name here 
+  
+  if(userPhotoName!=""){
+    // userPhoto = Gtk::Image().get_pixbuf();
+  }
+  userPFrame.pack_start(userPhoto,Gtk::PACK_SHRINK);
+
+  userName.set_label("Username");
+  userPFrame.pack_start(userName);
+ 
+  // New's Feed *Dynamically Generated*
+  feedScroll.set_border_width(5);
+  feedScroll.add(feedFrame);
+  feedScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  userPFrame.pack_start(feedScroll);
   
   //********************************************/
   frame.append_page(connectFrame, "Connect");
@@ -57,9 +74,10 @@ ConnectWindow::ConnectWindow():
   show_all_children();
 }
 
-// ***********************************************
-// *************** Host connected ****************
-ConnectWindow::ConnectWindow(ChatServer* h, int num,std::string temp):
+/***********************************************
+               Host connected
+************************************************/
+ConnectWindow::ConnectWindow(ChatServer* h, int num, std::string temp):
 talkFrame(Gtk::ORIENTATION_VERTICAL),
 userPFrame(Gtk::ORIENTATION_VERTICAL){
   set_default_size(300, 300); // size
@@ -69,7 +87,7 @@ userPFrame(Gtk::ORIENTATION_VERTICAL){
   messageScroll.set_border_width(5);
   messageScroll.set_size_request(70,50);
   conversation.set_editable(false);
-  conversation.get_buffer()->set_text(temp);
+  conversation.get_buffer()->set_text("");
   messageScroll.add(conversation);
   messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
@@ -107,6 +125,8 @@ void ConnectWindow::connect(){
     sigc::slot<bool>my_slot = sigc::mem_fun(*this,&ConnectWindow::update);
     Glib::signal_timeout().connect(my_slot, 100); // 10x a second
     frame.set_current_page(1);
+    // ********* Send user page *********
+    int check=client->sendMessage("~name~ My Name ~/");
   }else{
     std::cout << "Failed to connect"<<std::endl;
     delete client;
@@ -117,11 +137,10 @@ void ConnectWindow::sendMessage(){
   std::string getMessage = messageE.get_text()+'\n';
   messageE.set_text("");
   conversation.get_buffer()->insert_at_cursor(getMessage);
-  float check=client->sendMessage(getMessage);
+  int check=client->sendMessage(getMessage);
 }
 void ConnectWindow::sendMessage2(){
   std::string getMessage = messageE.get_text()+'\n';
-  std::cout << getMessage;
   messageE.set_text("");
   conversation.get_buffer()->insert_at_cursor(getMessage);
   std::cout << host->sendMessage(id,getMessage)<< std::endl;
@@ -129,7 +148,9 @@ void ConnectWindow::sendMessage2(){
 // *********** timer events *****************
 bool ConnectWindow::update(){
   std::string incoming=client->getMessage();
-  if(incoming!=""){
+  if(incoming[0] == '~'){
+    // userpage
+  }else if(incoming!=""){
     //  std::cout <<incoming;
     conversation.get_buffer()->insert_at_cursor(incoming);
   }
@@ -138,11 +159,12 @@ bool ConnectWindow::update(){
 }
 bool ConnectWindow::update2(){
   std::string incoming= host->getMessages(id);
-  if(incoming!=""){
+  if(incoming[0] == '~'){
+    // userpage
+  }else if(incoming!=""){
     //  std::cout <<incoming;
     conversation.get_buffer()->insert_at_cursor(incoming);
   }
-  std::cout <<host->socketConnected(id)<<std::endl;
   return true;
 }
 // ****************************************************

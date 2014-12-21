@@ -6,6 +6,7 @@
 #include <thread>
 #include "chat.h"
 #include "chatServer.h"
+#include <string>
 
 class ConnectWindow : public Gtk::Window{
 public:
@@ -36,10 +37,18 @@ protected:
   Gtk::Entry messageE;
   Gtk::Button sendB;
   // ******* User Page ************ 
+  std::string userPhotoName;
+  Gtk::Label userName;  // 
+  Gtk::Image userPhoto; // 
+  Gtk::ScrolledWindow feedScroll;
+  Gtk::Box feedFrame;
+  Gtk::Label otherStuff; // 
+
  private:
   Chat* client;
   ChatServer* host;
   int id;
+  bool server;
   std::thread clientThread;
   std::string name;
   std::string ip;

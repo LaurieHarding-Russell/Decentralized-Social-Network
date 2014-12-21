@@ -5,6 +5,7 @@ MainWindow::MainWindow():
   logInFrame(Gtk::ORIENTATION_VERTICAL),
   userFrame(Gtk::ORIENTATION_VERTICAL),
   options(Gtk::ORIENTATION_HORIZONTAL),
+  feedFrame(Gtk::ORIENTATION_VERTICAL),
   logInB("log in"){
 
   // **************** window stuff ******************************
@@ -36,7 +37,12 @@ MainWindow::MainWindow():
 
   //********************** User's Page *********************
   // user photo
-  userPhoto.set_label("User photo");
+  userPhotoName = "";
+  // <-------  Load in photo name here 
+  
+  if(userPhotoName!=""){
+    // userPhoto = Gtk::Image().get_pixbuf();
+  }
   userFrame.pack_start(userPhoto,Gtk::PACK_SHRINK);
 
   userName.set_label("Username");
@@ -59,10 +65,11 @@ MainWindow::MainWindow():
   options.pack_start(logout);
 
   userFrame.pack_start(options,Gtk::PACK_SHRINK);
-
-  //* Other Stuff */
-  otherStuff.set_label("Other Stuff");
-  userFrame.pack_start(otherStuff);
+  // New's Feed *Dynamically Generated*
+  feedScroll.set_border_width(5);
+  feedScroll.add(feedFrame);
+  feedScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  userFrame.pack_start(feedScroll);
   
   
   /************************************/
@@ -94,7 +101,30 @@ void MainWindow::connectH(){
   chatBoxes.push_back(newBox);
 }
 
+/* 
+   - Checks for new connections
+   - Checks for
+*/
+bool MainWindow::update(){
+  std::string temp=host->getMessages(current);
+  // Check for new connections!
+  if(temp!=""){
+    ConnectWindow *newBox = new ConnectWindow(host,current,temp);
+    newBox->show();
+    chatBoxes.push_back(newBox);
+    current++;
+  }
+  // Check for new feed stuff!
+  if(feedBuffer.empty()){
+    //  chatBoxes;
+  }
+  return true;
+}
+/*
+  Logs out, disconnects host. Should del
+*/
 void MainWindow::logoutH(){ // Very Broken
+  chatBoxes.clear();
   myUsername="";
   myPassword="";
   std::cout << "Release the magic imps\n";
@@ -106,19 +136,7 @@ void MainWindow::logoutH(){ // Very Broken
   set_title("Anti-Social Network");
   frame.set_current_page(1);
 }
-// timer
-bool MainWindow::update(){
-  std::string temp=host->getMessages(current);
-  std::cout<<temp;
-  if(temp!=""){
-    ConnectWindow *newBox = new ConnectWindow(host,current,temp);
-    newBox->show();
-    chatBoxes.push_back(newBox);
-    current++;
-  }
-  return true;
-}
+// ******************* Exit ***************************
 MainWindow::~MainWindow(){
- // ******************* Exit ***************************
   logoutH();
 }

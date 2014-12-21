@@ -6,11 +6,18 @@
 #include "chatServer.h"
 #include "chat.h"
 #include <thread>
+#include <ctime>
 
+// graphics
 #include <gtkmm.h>
 #include <gtkmm/window.h>
 #include "connectWindow.h"
 
+struct Post{
+  std::string message;
+  std::time_t stamp;
+  Chat* owner;
+};
 
 class MainWindow : public Gtk::Window{
 
@@ -31,31 +38,36 @@ protected:
   Gtk::Notebook frame; // Switch pages
   Gtk::Box logInFrame; // Verticle array
   Gtk::Box userFrame;
+
   // ******** Login *********
   Gtk::Label userL;
   Gtk::Entry username;
   Gtk::Label passL;
   Gtk::Entry password;
   Gtk::Button logInB; // log in
-  // ******* User Page **********
-  Gtk::Label userName;
-  Gtk::Label userPhoto;
-  Gtk::Box options;
-  Gtk::Button connect,cellForward,finder,logout;
-  Gtk::Label otherStuff;
-   
- private:
-   ChatServer* host; // Start host right away.
-   ConnectWindow chatBox;
-   
-   std::list<ConnectWindow*> chatBoxes;
-   Chat* clients[MAXCONNECT];
-   
-   std::thread hostThread;
-   std::thread clientThreads[MAXCONNECT];
 
-   std::string myUsername;
-   std::string myPassword;
+  // ******* User Page **********
+  std::string userPhotoName;
+  Gtk::Label userName;  // 
+  Gtk::Image userPhoto; // 
+  Gtk::Box options;     // 
+  Gtk::Button connect,cellForward,finder,logout; // 
+  Gtk::ScrolledWindow feedScroll;
+  Gtk::Box feedFrame;
+  Gtk::Label otherStuff; // 
+  std::list<Post*> feedBuffer;
+ private:
+  ChatServer* host; // Start host right away.
+  ConnectWindow chatBox;
+   
+  std::list<ConnectWindow*> chatBoxes;
+  Chat* clients[MAXCONNECT];
+   
+  std::thread hostThread;
+  std::thread clientThreads[MAXCONNECT];
+
+  std::string myUsername;
+  std::string myPassword;
 };
 
 #endif
