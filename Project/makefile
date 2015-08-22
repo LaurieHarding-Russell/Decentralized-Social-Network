@@ -2,6 +2,15 @@
 CC = g++
 CFLAGS = -g -std=c++11 -lpthread
 
+SYS := $(shell gcc -dumpmachine)
+ifneq (, $(findstring linux, $(SYS)))
+	# For Linux specific compiling stuff
+	
+else ifneq(, $(findstring mingw, $(SYS)))
+	# Do mingw (windows) specific compiling stuff
+	
+endif
+
 DSN : dSN.cpp mainWindow.o
 	${CC} ${CFLAGS} dSN.cpp chat.o chatServer.o connectWindow.o mainWindow.o -o DSN `pkg-config gtkmm-3.0 --cflags --libs`
 

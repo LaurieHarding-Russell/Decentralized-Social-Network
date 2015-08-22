@@ -67,7 +67,11 @@ void ChatServer::serverLoop(){
 	rLock.lock();
 	while(running){
 	  rLock.unlock();
+	  #ifdef _WIN32 // Stupid win sockets...
+	  int clientlen = sizeof(client);
+      #elif __linux__
 	  unsigned int clientlen = sizeof(client);
+	  #endif
 	  if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing client info
 	    inet_ntoa(client.sin_addr);
 	    threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current); // Start socket polling thread
@@ -80,7 +84,11 @@ void ChatServer::serverLoop(){
       }
     }
   }
-  close(serverSock);
+  #ifdef _WIN32
+    closesocket(serverSock);
+  #elif __linux__
+    close(serverSock);	// Disconnect
+  #endif
   for(int lp1 =0; lp1!=current;lp1++){
     threadIds[lp1].join();
   }

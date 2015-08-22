@@ -1,0 +1,9 @@
+for windows
+https://wiki.gnome.org/Projects/gtkmm/MSWindows
+
+addisional commands
+// install make
+ pacman -S make
+
+After you make the project throw it into the wBin folder before running it.
+The above is meant to be temperary solution.

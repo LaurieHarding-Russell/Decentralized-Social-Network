@@ -15,21 +15,21 @@ http://www.gnu.org/licenses/lgpl.html#TOC1
 // OS dependent includes
 
 #ifdef _WIN32
-
+	#include <gtkmm/application.h>
 #elif __linux__
-
+	#include <gtkmm/application.h>
 #endif
 
 // Graphics
 #include <iostream>  // Until we make a gui
-#include <gtkmm/application.h>
+
 #include "mainWindow.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]){
-  // ***************** graphic set up *****************************
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
-  MainWindow mainW; 
-  return app->run(mainW); // Should get Aborted since threads arn't joined.
+	// ***************** graphic set up *****************************
+	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
+	MainWindow mainW; 
+	return app->run(mainW); // Should get Aborted since threads arn't joined.
 }
