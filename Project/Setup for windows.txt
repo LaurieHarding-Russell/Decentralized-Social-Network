@@ -5,6 +5,5 @@ addisional commands
 // install make
  pacman -S make
 
-Throw all the dlls in C:\msys32\mingw64\bin that you need into wBin,
 After you make the project throw it into the wBin folder before running it.
 The above is meant to be temperary solution. 

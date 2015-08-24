@@ -15,13 +15,12 @@ http://www.gnu.org/licenses/lgpl.html#TOC1
 // OS dependent includes
 
 #ifdef _WIN32
-	#include <gtkmm/application.h>
 #elif __linux__
-	#include <gtkmm/application.h>
 #endif
 
 // Graphics
-#include <iostream>  // Until we make a gui
+#include <gtkmm/application.h>
+#include <iostream>	// Until we make a gui
 
 #include "mainWindow.h"
 
