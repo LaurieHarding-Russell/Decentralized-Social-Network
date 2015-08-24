@@ -68,6 +68,9 @@ protected:
 
 	std::string myUsername;
 	std::string myPassword;
+
+	sigc::connection updateHandler;
+	bool loggedIn;
 };
 
 #endif

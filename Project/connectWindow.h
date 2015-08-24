@@ -52,5 +52,6 @@ protected:
 	std::thread clientThread;
 	std::string name;
 	std::string ip;
+	bool loggedOn;
 };
 #endif

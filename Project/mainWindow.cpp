@@ -76,6 +76,7 @@ MainWindow::MainWindow():
 	frame.append_page(logInFrame);
 	frame.append_page(userFrame);
 	show_all_children();
+	loggedIn=false;
 }
 // ******************** Handers ***************************
 void MainWindow::logIn(){
@@ -91,8 +92,9 @@ void MainWindow::logIn(){
 	userName.set_label(myUsername);
 	frame.set_current_page(1);
 	// host timer
-	sigc::slot<bool>my_slot = sigc::mem_fun(*this,&MainWindow::update);
-	Glib::signal_timeout().connect(my_slot, 100); // 10x a second
+	sigc::slot<bool> mySlot = sigc::mem_fun(*this,&MainWindow::update);
+	updateHandler= Glib::signal_timeout().connect(mySlot, 100); // 10x a second
+	loggedIn=true;
 }
 
 void MainWindow::connectH(){
@@ -118,6 +120,7 @@ bool MainWindow::update(){
 	if(feedBuffer.empty()){
 		//	chatBoxes;
 	}
+
 	return true;
 }
 /*
@@ -131,12 +134,17 @@ void MainWindow::logoutH(){ // Very Broken
 	host->stopServer(); // Need a way to stop accept connection...
 	hostThread.join();	// can't join until accept connection is cancelled.
 	std::cout << "Released Mr. H\n";
-	//delete host;			// Will find a work arround but... a good OS will grab back the memory.
+	// detach update timer
+	updateHandler.disconnect();
+	delete host;			// Will find a work arround but... a good OS will grab back the memory.
 	std::cout << "Dragons fed..." <<std::endl<<std::endl;
 	set_title("Anti-Social Network");
 	frame.set_current_page(0);
+	loggedIn=false;
 }
 // ******************* Exit ***************************
 MainWindow::~MainWindow(){
-	logoutH();
+	if(loggedIn){
+		logoutH();
+	}
 }

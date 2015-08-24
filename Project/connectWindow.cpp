@@ -80,36 +80,36 @@ ConnectWindow::ConnectWindow():
 ConnectWindow::ConnectWindow(ChatServer* h, int num, std::string temp):
 talkFrame(Gtk::ORIENTATION_VERTICAL),
 userPFrame(Gtk::ORIENTATION_VERTICAL){
-  set_default_size(300, 300); // size
-  set_border_width(5);// border
-  add(frame);
-  // Message Box
-  messageScroll.set_border_width(5);
-  messageScroll.set_size_request(70,50);
-  conversation.set_editable(false);
-  conversation.get_buffer()->set_text("");
-  messageScroll.add(conversation);
-  messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	set_default_size(300, 300); // size
+	set_border_width(5);// border
+	add(frame);
+	// Message Box
+	messageScroll.set_border_width(5);
+	messageScroll.set_size_request(70,50);
+	conversation.set_editable(false);
+	conversation.get_buffer()->set_text("");
+	messageScroll.add(conversation);
+	messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-  talkFrame.pack_start(messageScroll,Gtk::PACK_SHRINK);
-  // Message input
-  messageE.set_max_length(50);
-  messageE.select_region(10,60);
-  talkFrame.pack_start(messageE,Gtk::PACK_SHRINK);
-  // Send
-  sendB.set_label("Send");
-  talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
-  sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage2));
-  frame.append_page(talkFrame, "Message");
-  frame.append_page(userPFrame, "Users page");
+	talkFrame.pack_start(messageScroll,Gtk::PACK_SHRINK);
+	// Message input
+	messageE.set_max_length(50);
+	messageE.select_region(10,60);
+	talkFrame.pack_start(messageE,Gtk::PACK_SHRINK);
+	// Send
+	sendB.set_label("Send");
+	talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
+	sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage2));
+	frame.append_page(talkFrame, "Message");
+	frame.append_page(userPFrame, "Users page");
 
-  show_all_children();
+	show_all_children();
 
-  // Connection Part
-  host=h;
-  id = num;
-  sigc::slot<bool>my_slot = sigc::mem_fun(*this,&ConnectWindow::update2);
-  Glib::signal_timeout().connect(my_slot, 100); // 10x a second
+	// Connection Part
+	host=h;
+	id = num;
+	sigc::slot<bool>mySlot = sigc::mem_fun(*this,&ConnectWindow::update2);
+	Glib::signal_timeout().connect(mySlot, 100); // 10x a second
 }
 // ***************** Signal Handlers *****************
 void ConnectWindow::connect(){
@@ -122,8 +122,8 @@ void ConnectWindow::connect(){
   if(client->getState()==20){ // Connect correctly?
     std::cout << "Connected!"<< std::endl;
     clientThread = std::thread(&Chat::messageCheckLoop,client);
-    sigc::slot<bool>my_slot = sigc::mem_fun(*this,&ConnectWindow::update);
-    Glib::signal_timeout().connect(my_slot, 100); // 10x a second
+    sigc::slot<bool>mySlot = sigc::mem_fun(*this,&ConnectWindow::update);
+    Glib::signal_timeout().connect(mySlot, 100); // 10x a second
     frame.set_current_page(1);
     // ********* Send user page *********
     int check=client->sendMessage("~name~ My Name ~/");
@@ -158,13 +158,14 @@ bool ConnectWindow::update(){
   return true;
 }
 bool ConnectWindow::update2(){
-  std::string incoming= host->getMessages(id);
-  if(incoming[0] == '~'){
-    // userpage
-  }else if(incoming!=""){
-    //  std::cout <<incoming;
-    conversation.get_buffer()->insert_at_cursor(incoming);
-  }
+
+	std::string incoming= host->getMessages(id);
+	if(incoming[0] == '~'){
+		// userpage
+	}else if(incoming!=""){
+		//  std::cout <<incoming;
+		conversation.get_buffer()->insert_at_cursor(incoming);
+	}
   return true;
 }
 // ****************************************************
@@ -172,5 +173,6 @@ ConnectWindow::~ConnectWindow(){
   std::cout << "Released" << std::endl;
   client->endMessageCheckLoop(); // Stoping the loop
   clientThread.join();            // Waiting for thread
-  delete client;  // causes system error
+  //delete client;  // causes system error
+  std::cout << "working?\n";
 }
