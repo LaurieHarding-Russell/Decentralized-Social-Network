@@ -3,6 +3,7 @@ Client
 */
 
 #include "chat.h"
+#include <iostream>
 /* Currently not being used... */
 Chat::Chat(){
 
@@ -53,13 +54,14 @@ void Chat::messageCheckLoop(){
 	int size;
 	rLock.lock();
 	while(failedState>=20){ 
+		std::cout<<"quick\n";
 		rLock.unlock();
 		if((size=recv(sock, buffer, BUFFSIZE-1, 0)) < 1) {
 			// No new bytes...
 
 		}else{ // NEW STUFF!
 			if(strcmp(buffer, "~/exit")){ // On exit.
-	failedState==1;
+				failedState==1;
 			}
 			messageLock.lock();
 			message =message +buffer;
@@ -93,14 +95,18 @@ std::string Chat::getMessage(){
 
 // IMPORTANT! Don't forget! Don't even think to forget. If you forget it lives.
 void Chat::endMessageCheckLoop(){
+	std::cout<<"test1.1\n";
 	rLock.lock();
+	std::cout<<"test2.1\n";
 	failedState =0; // End it.
 	rLock.unlock();
+	std::cout<<"test3.1\n";
 }
 /*
 
 */
 Chat::~Chat(){
+	std::cout<<" *** Chat exit\n";
 	#ifdef _WIN32
 	closesocket(sock);
 	#elif __linux__

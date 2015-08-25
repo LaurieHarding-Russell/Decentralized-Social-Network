@@ -29,6 +29,7 @@ using namespace std;
 int main(int argc, char *argv[]){
 	// ***************** graphic set up *****************************
 	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc,argv,"Decentralized.Social.Network");
+	std::cout << "*** very start ***\n";
 	MainWindow mainW; 
 	return app->run(mainW); // Should get Aborted since threads arn't joined.
 }

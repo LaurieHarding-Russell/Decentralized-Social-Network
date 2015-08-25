@@ -2,76 +2,78 @@
 #include <iostream>
 
 ConnectWindow::ConnectWindow():
-  connectFrame(Gtk::ORIENTATION_VERTICAL),
-  talkFrame(Gtk::ORIENTATION_VERTICAL),
-  userPFrame(Gtk::ORIENTATION_VERTICAL){
-  //*********** window stuff ********************
-  set_default_size(300, 300); // size
-  set_border_width(5);// border
-  add(frame);
-  //********* connect layout *******************
-  // Ip address
-  ipAddressL.set_label("Ip Address");
-  connectFrame.pack_start(ipAddressL,Gtk::PACK_SHRINK);
+	connectFrame(Gtk::ORIENTATION_VERTICAL),
+	talkFrame(Gtk::ORIENTATION_VERTICAL),
+	userPFrame(Gtk::ORIENTATION_VERTICAL){
 
-  ipAddressE.set_max_length(26);
-  ipAddressE.select_region(0,50);
-  connectFrame.pack_start(ipAddressE,Gtk::PACK_SHRINK);
+	std::cout << "ConnectWIndowStarted!\n";
+	//*********** window stuff ********************
+	set_default_size(300, 300); // size
+	set_border_width(5);// border
+	add(frame);
+	//********* connect layout *******************
+	// Ip address
+	ipAddressL.set_label("Ip Address");
+	connectFrame.pack_start(ipAddressL,Gtk::PACK_SHRINK);
+
+	ipAddressE.set_max_length(26);
+	ipAddressE.select_region(0,50);
+	connectFrame.pack_start(ipAddressE,Gtk::PACK_SHRINK);
   
-  // Name
-  nameL.set_label("name");
-  connectFrame.pack_start(nameL,Gtk::PACK_SHRINK);
+	// Name
+	nameL.set_label("name");
+	connectFrame.pack_start(nameL,Gtk::PACK_SHRINK);
 
-  nameE.set_max_length(26);
-  nameE.select_region(0,50);
-  connectFrame.pack_start(nameE,Gtk::PACK_SHRINK);
-  // connect
-  connectB.set_label("Connect");
-  connectB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::connect));
+	nameE.set_max_length(26);
+	nameE.select_region(0,50);
+	connectFrame.pack_start(nameE,Gtk::PACK_SHRINK);
+	// connect
+	connectB.set_label("Connect");
+	connectB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::connect));
 
-  connectFrame.pack_start(connectB,Gtk::PACK_SHRINK);
+	connectFrame.pack_start(connectB,Gtk::PACK_SHRINK);
 
-  //********* messenger Layout *****************
-  // Message Box
-  messageScroll.set_border_width(5);
-  messageScroll.set_size_request(70,50);
-  conversation.set_editable(false);
-  messageScroll.add(conversation);
-  messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	//********* messenger Layout *****************
+	// Message Box
+	messageScroll.set_border_width(5);
+	messageScroll.set_size_request(70,50);
+	conversation.set_editable(false);
+	messageScroll.add(conversation);
+	messageScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-  talkFrame.pack_start(messageScroll,Gtk::PACK_SHRINK);
-  // Message input
-  messageE.set_max_length(50);
-  messageE.select_region(10,60);
-  talkFrame.pack_start(messageE,Gtk::PACK_SHRINK);
-  // Send
-  sendB.set_label("Send");
-  sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage));
-  talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
-  //********* User Page Layout *****************
-  // user photo
-  userPhotoName = "";
-  // <-------  Load in photo name here 
+	talkFrame.pack_start(messageScroll,Gtk::PACK_SHRINK);
+	// Message input
+	messageE.set_max_length(50);
+	messageE.select_region(10,60);
+	talkFrame.pack_start(messageE,Gtk::PACK_SHRINK);
+	// Send
+	sendB.set_label("Send");
+	sendB.signal_clicked().connect(sigc::mem_fun(*this,&ConnectWindow::sendMessage));
+	talkFrame.pack_start(sendB,Gtk::PACK_SHRINK);
+	//********* User Page Layout *****************
+	// user photo
+	userPhotoName = "";
+	// <-------  Load in photo name here 
   
-  if(userPhotoName!=""){
-    // userPhoto = Gtk::Image().get_pixbuf();
-  }
-  userPFrame.pack_start(userPhoto,Gtk::PACK_SHRINK);
+	if(userPhotoName!=""){
+	// userPhoto = Gtk::Image().get_pixbuf();
+	}
+	userPFrame.pack_start(userPhoto,Gtk::PACK_SHRINK);
 
-  userName.set_label("Username");
-  userPFrame.pack_start(userName);
+	userName.set_label("Username");
+	userPFrame.pack_start(userName);
  
-  // New's Feed *Dynamically Generated*
-  feedScroll.set_border_width(5);
-  feedScroll.add(feedFrame);
-  feedScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  userPFrame.pack_start(feedScroll);
+	// New's Feed *Dynamically Generated*
+	feedScroll.set_border_width(5);
+	feedScroll.add(feedFrame);
+	feedScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	userPFrame.pack_start(feedScroll);
   
-  //********************************************/
-  frame.append_page(connectFrame, "Connect");
-  frame.append_page(talkFrame, "Message");
-  frame.append_page(userPFrame, "Users page");
-  show_all_children();
+	//********************************************/
+	frame.append_page(connectFrame, "Connect");
+	frame.append_page(talkFrame, "Message");
+	frame.append_page(userPFrame, "Users page");
+	show_all_children();
 }
 
 /***********************************************
@@ -170,9 +172,12 @@ bool ConnectWindow::update2(){
 }
 // ****************************************************
 ConnectWindow::~ConnectWindow(){
-  std::cout << "Released" << std::endl;
-  client->endMessageCheckLoop(); // Stoping the loop
-  clientThread.join();            // Waiting for thread
-  //delete client;  // causes system error
-  std::cout << "working?\n";
+	std::cout << "Released" << std::endl;
+	if (client!=NULL){
+		client->endMessageCheckLoop(); // Stoping the loop
+		std::cout<<" *** endMessageCheckLoop\n";
+		clientThread.join();            // Waiting for thread
+		delete client;  // causes system error
+	}
+	std::cout << "working?\n";
 }

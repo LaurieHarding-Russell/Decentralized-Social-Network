@@ -4,6 +4,7 @@
 #include <iostream>
 /* There can only be one! Well, there should only be one. This allows other computers to connect.*/
 ChatServer::ChatServer(){
+	std::cout << "*** ChatServer ***\n";
 	current =0; // current number of connections
 }
 /*
