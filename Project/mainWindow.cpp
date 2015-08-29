@@ -7,7 +7,6 @@ MainWindow::MainWindow():
 	options(Gtk::ORIENTATION_HORIZONTAL),
 	feedFrame(Gtk::ORIENTATION_VERTICAL),
 	logInB("log in"){
-	std::cout << "*** main window! ***\n";
 	// **************** window stuff ******************************
 	set_default_size(300, 300); // size
 	set_border_width(5);// border
@@ -98,7 +97,6 @@ void MainWindow::logIn(){
 }
 
 void MainWindow::connectH(){
-	std::cout << "*** connectH ***\n";
 	ConnectWindow *newBox = new ConnectWindow();
 	newBox->show();
 	chatBoxes.push_back(newBox);
@@ -112,7 +110,6 @@ bool MainWindow::update(){
 	std::string temp=host->getMessages(current);
 	// Check for new connections!
 	if(temp!=""){
-		std::cout << "*** Update! ***\n";
 		ConnectWindow *newBox = new ConnectWindow(host,current,temp);
 		newBox->show();
 		chatBoxes.push_back(newBox);

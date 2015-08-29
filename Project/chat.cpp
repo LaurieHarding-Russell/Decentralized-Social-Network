@@ -53,8 +53,7 @@ void Chat::messageCheckLoop(){
 	char buffer[BUFFSIZE];
 	int size;
 	rLock.lock();
-	while(failedState>=20){ 
-		std::cout<<"quick\n";
+	while(failedState>=20){
 		rLock.unlock();
 		if((size=recv(sock, buffer, BUFFSIZE-1, 0)) < 1) {
 			// No new bytes...
@@ -95,18 +94,14 @@ std::string Chat::getMessage(){
 
 // IMPORTANT! Don't forget! Don't even think to forget. If you forget it lives.
 void Chat::endMessageCheckLoop(){
-	std::cout<<"test1.1\n";
 	rLock.lock();
-	std::cout<<"test2.1\n";
 	failedState =0; // End it.
 	rLock.unlock();
-	std::cout<<"test3.1\n";
 }
 /*
 
 */
 Chat::~Chat(){
-	std::cout<<" *** Chat exit\n";
 	#ifdef _WIN32
 	closesocket(sock);
 	#elif __linux__

@@ -5,8 +5,6 @@ ConnectWindow::ConnectWindow():
 	connectFrame(Gtk::ORIENTATION_VERTICAL),
 	talkFrame(Gtk::ORIENTATION_VERTICAL),
 	userPFrame(Gtk::ORIENTATION_VERTICAL){
-
-	std::cout << "ConnectWIndowStarted!\n";
 	//*********** window stuff ********************
 	set_default_size(300, 300); // size
 	set_border_width(5);// border
@@ -153,10 +151,8 @@ bool ConnectWindow::update(){
   if(incoming[0] == '~'){
     // userpage
   }else if(incoming!=""){
-    //  std::cout <<incoming;
     conversation.get_buffer()->insert_at_cursor(incoming);
   }
-  //std::cout <<client->getState()<<std::endl;
   return true;
 }
 bool ConnectWindow::update2(){
@@ -165,19 +161,15 @@ bool ConnectWindow::update2(){
 	if(incoming[0] == '~'){
 		// userpage
 	}else if(incoming!=""){
-		//  std::cout <<incoming;
 		conversation.get_buffer()->insert_at_cursor(incoming);
 	}
   return true;
 }
 // ****************************************************
 ConnectWindow::~ConnectWindow(){
-	std::cout << "Released" << std::endl;
 	if (client!=NULL){
 		client->endMessageCheckLoop(); // Stoping the loop
-		std::cout<<" *** endMessageCheckLoop\n";
 		clientThread.join();            // Waiting for thread
 		delete client;  // causes system error
 	}
-	std::cout << "working?\n";
 }
