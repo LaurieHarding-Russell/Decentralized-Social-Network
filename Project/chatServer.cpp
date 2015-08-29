@@ -110,12 +110,10 @@ void ChatServer::serverLoop(){
 void ChatServer::stopServer(){
 	rLock.lock();
 	running = false;
-	// Stop the accept command by closeing the serverSock
+	// Stop the accept command by closeing the serverSock on windows.
 	// Not very pretty... but it works
 	#ifdef _WIN32
 		closesocket(serverSock);
-	#elif __linux__
-		close(serverSock);	
 	#endif
 	rLock.unlock();
 }
