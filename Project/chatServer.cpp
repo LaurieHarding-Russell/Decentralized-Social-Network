@@ -51,10 +51,16 @@ Returns number of bytes sent.
 int ChatServer::sendMessage(int id, std::string message){
 	return (send(clientSock[id], message.c_str(), message.length(), 0));
 }
-/*
+/* 
 Server Host that clients initially connect too.
 */
 void ChatServer::serverLoop(){
+	// time interval to wait for accepts. Polling so don't wait.
+	struct timeval tv;
+	fd_set readfds;
+	tv.tv_sec = 0;
+	tv.tv_usec = 0;
+	fd_set nSFD; // New Socket File Description.
 	rLock.lock();
 	running = true;
 	rLock.unlock();
@@ -67,18 +73,23 @@ void ChatServer::serverLoop(){
 			// Listen on the server socket
 			if (listen(serverSock, MAXCONNECT) >= 0) {
 				rLock.lock();
+				FD_ZERO(&nSFD);// clear thet socket
+				FD_SET(serverSock,&nSFD);// Add server socket to set
 				while(running){
-					rLock.unlock();
+				    rLock.unlock();		
+					
 					#ifdef _WIN32 // Stupid win sockets...
 					int clientlen = sizeof(client);
 					#elif __linux__
 					unsigned int clientlen = sizeof(client);
 					#endif
-					if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing client info
-						inet_ntoa(client.sin_addr);
-						threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current); // Start socket polling thread
-						clientSock[current] = clientSockInit; // Sockets handle.
-						current++; 
+					if(select(1,&nSFD,NULL,NULL,&tv)){  // accept will accept... won't block. 
+						if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing client info
+							inet_ntoa(client.sin_addr);
+							threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current); // Start socket polling thread
+							clientSock[current] = clientSockInit; // Sockets handle.
+							current++; 
+						}
 					}
 					rLock.lock();
 				}
