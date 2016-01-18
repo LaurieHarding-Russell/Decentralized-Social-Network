@@ -1,4 +1,11 @@
-/* Holds all the data for Chat functions
+/* 
+The Chat Class is meant to initiate a connection with a chat server.
+Once a connection is established, the chat object sends and recieves 
+Data with the Chat Server.
+
+Note: This class is meant to be very basic. If you want to add support
+for interpreting data please create a new class that inherits this one.
+
 */
 
 #ifndef chat_h
@@ -21,32 +28,74 @@
 #include <string.h>
 
 #define BUFFSIZE 128
-#define HOSTSOCK 8000	 // Hope that it isn't being used. Needs researching.
+#define HOSTSOCK 8000	 // This is the default socket being used by the chatServer.
 
 class Chat{
  public:
-	Chat();// Unused.
+	/*
+	Constructor
+	Purpose: To setup a connection with a chatServer object
+	Returns: NA
+	*/
 	Chat(std::string address, std::string name);// Start a connection
+	/*
+	Destructor
+	Purpose: To safely destroy the chat object
+	Returns: NA
+	*/
 	~Chat();
-
+	/*
+	sendMessage
+	Purpose: To safely destroy the chat object
+	Returns: Current failedState value.
+	*/
 	int sendMessage(std::string message);
-	void messageCheckLoop(); // Checks for new messages
-	int getState(); // 0= no connection,1= tried,20 = good, 30 = message failed
-	void endMessageCheckLoop();
+	/*
+	messageCheckLoop
+	Purpose: A threadable function that constantly polls for new messeges.
+	Returns: NA
+	Note: Any commands that need to be processed in this loop should start with
+	the prefix ~/
+	*/
+	void messageCheckLoop();
+	/*
+	getState
+	Purpose: to get the value of failedState
+	Returns: failedState
+	*/
+	int getState();
+	/*
+	getMessage
+	Purpose: to get the value of message and clear it.
+	Returns: message
+	*/
 	std::string getMessage();
+	/*
+	endMessageCheckLoop
+	Purpose: To let the messageCheckLoop exit.
+	Returns: NA
+	*/
+	void endMessageCheckLoop();
 
 private:
 	// Sock Stuff
 	 struct sockaddr_in client;
-	 std::string address;
-	 std::string name;
-	 bool ending;
-	 int sock;
-	 int failedState; // Keeps track of where it all went wrong...
-	 std::mutex rLock;
+	 std::string address;		// IP address of user we are connecting to.
+	 std::string name;			// Name of user we are connecting to.
+	 int sock;					// The connecting Socket
+	 /*
+	 failedState Values
+	 0:The constructor failed to create 
+	 1: Connection Failed
+	 20: Everythings working.
+	 30: Last message sent failed to send all of its bytes
+	 Note: New Fatal errors should be bellow 20.
+	 */
+	 int failedState;
+	 std::mutex rLock;			// lock for failedState
 	 // Message stuff
-	 std::mutex messageLock;
-	 std::string message;
+	 std::mutex messageLock;	// Locks the message string
+	 std::string message;		// Stores the recieved messages.
 };
 
 #endif

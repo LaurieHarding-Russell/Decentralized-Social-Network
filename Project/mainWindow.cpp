@@ -1,5 +1,4 @@
 #include "mainWindow.h"
-#include <iostream> 
 
 MainWindow::MainWindow():
 	logInFrame(Gtk::ORIENTATION_VERTICAL),

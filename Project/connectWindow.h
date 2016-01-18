@@ -8,6 +8,8 @@
 #include "chatServer.h"
 #include <string>
 
+#include <iostream>	// For testing purposes only.
+
 class ConnectWindow : public Gtk::Window{
 public:
 	ConnectWindow();

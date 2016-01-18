@@ -1,5 +1,4 @@
 #include "connectWindow.h"
-#include <iostream>
 
 ConnectWindow::ConnectWindow():
 	connectFrame(Gtk::ORIENTATION_VERTICAL),

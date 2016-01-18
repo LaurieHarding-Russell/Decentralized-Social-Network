@@ -13,6 +13,8 @@
 #include <gtkmm/window.h>
 #include "connectWindow.h"
 
+#include <iostream>	// For testing purposes only.
+
 struct Post{
 	std::string message;
 	std::time_t stamp;
