@@ -1,11 +1,8 @@
-/* 
-chatServer.cpp
-
-*/
 #include "chatServer.h"
-/* There can only be one! Well, there should only be one. This allows other computers to connect.*/
+
 ChatServer::ChatServer(){
 	current =0; // current number of connections
+	lastUpdated=0;
 }
 /*
 The function polls a single sockets recieved data.
@@ -31,30 +28,7 @@ void ChatServer::handleClient(int sock, int me) {
 	close(sock);	// Disconnect
 #endif
 }
-/*socket connected getter.*/
-bool ChatServer::socketConnected(int id){
-	return sConnected[id];
-}
-/* Get Message */
-std::string ChatServer::getMessages(int id){
-	std::string getM;
-	messageLock[id].lock();
-	getM = messages[id];
-	messages[id]="";
-	messageLock[id].unlock();
-	return getM;
-}
 
-/*
- Send Message.
-Returns number of bytes sent.
-*/
-int ChatServer::sendMessage(int id, std::string message){
-	return (send(clientSock[id], message.c_str(), message.length(), 0));
-}
-/* 
-Server Host that clients initially connect too.
-*/
 void ChatServer::serverLoop(){
 	// time interval to wait for accepts. Polling so don't wait.
 	struct timeval tv;
@@ -87,8 +61,7 @@ void ChatServer::serverLoop(){
 					if(select(1,&nSFD,NULL,NULL,&tv)){  // accept will accept... won't block. 
 						if ((clientSockInit = accept(serverSock, (struct sockaddr *)&client,&clientlen)) >= 0){ // Grabing client info
 							inet_ntoa(client.sin_addr);
-							threadIds[current] = std::thread(&ChatServer::handleClient,this,clientSockInit, current); // Start socket polling thread
-							clientSock[current] = clientSockInit; // Sockets handle.
+							clients[current] = new Chat(clientSockInit,"");
 							current++; 
 						}
 					}
@@ -118,7 +91,7 @@ void ChatServer::stopServer(){
 	#endif
 	rLock.unlock();
 }
-/* Returns true if server is still running */
+
 bool ChatServer::serverRunning(){
 	bool temp;
 	rLock.lock();
@@ -126,7 +99,17 @@ bool ChatServer::serverRunning(){
 	rLock.unlock();
 	return temp;
 }
+bool ChatServer::checkCurrent(){
+	return current==lastUpdated;
+}
+
+Chat* ChatServer::getClient(){
+	lastUpdated++;
+	return clients[lastUpdated-1];
+}
 
 ChatServer::~ChatServer(){
-	// delete [] threadIds; // glib error
+	for(int lpC=lastUpdated;lpC!=current;lpC++){
+		delete clients[lpC];
+	}
 }

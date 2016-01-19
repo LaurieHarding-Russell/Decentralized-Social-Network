@@ -2,10 +2,6 @@
 The Chat Class is meant to initiate a connection with a chat server.
 Once a connection is established, the chat object sends and recieves 
 Data with the Chat Server.
-
-Note: This class is meant to be very basic. If you want to add support
-for interpreting data please create a new class that inherits this one.
-
 */
 
 #ifndef chat_h
@@ -34,42 +30,55 @@ class Chat{
  public:
 	/*
 	Constructor
-	Purpose: To setup a connection with a chatServer object
+	Purpose: To setup a connection with a chatServer object using an address
 	Returns: NA
 	*/
-	Chat(std::string address, std::string name);// Start a connection
+	Chat(std::string address);
+
+	/*
+	Constructor
+	Purpose: To accept a connection with a chatServer object using an existing socket
+	Returns: NA
+	*/
+	Chat(int socket,std::string address);
+
 	/*
 	Destructor
 	Purpose: To safely destroy the chat object
 	Returns: NA
 	*/
 	~Chat();
+	
 	/*
 	sendMessage
 	Purpose: To safely destroy the chat object
 	Returns: Current failedState value.
 	*/
 	int sendMessage(std::string message);
+	
 	/*
 	messageCheckLoop
-	Purpose: A threadable function that constantly polls for new messeges.
+	Purpose: To constantly poll for new messeges.
 	Returns: NA
 	Note: Any commands that need to be processed in this loop should start with
 	the prefix ~/
 	*/
 	void messageCheckLoop();
+	
 	/*
 	getState
 	Purpose: to get the value of failedState
 	Returns: failedState
 	*/
 	int getState();
+	
 	/*
 	getMessage
 	Purpose: to get the value of message and clear it.
 	Returns: message
 	*/
 	std::string getMessage();
+	
 	/*
 	endMessageCheckLoop
 	Purpose: To let the messageCheckLoop exit.
@@ -81,7 +90,6 @@ private:
 	// Sock Stuff
 	 struct sockaddr_in client;
 	 std::string address;		// IP address of user we are connecting to.
-	 std::string name;			// Name of user we are connecting to.
 	 int sock;					// The connecting Socket
 	 /*
 	 failedState Values

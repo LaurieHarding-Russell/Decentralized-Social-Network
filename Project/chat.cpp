@@ -1,8 +1,7 @@
 #include "chat.h"
 
-Chat::Chat(std::string a, std::string n){
+Chat::Chat(std::string a){
 	address =a;
-	name = n;
 	failedState= 0;																// If everything works failedState will chage to 20.
 	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) != -1) {				// Creating TCP socket
 		failedState =1;															// Not connected yet.
@@ -15,9 +14,13 @@ Chat::Chat(std::string a, std::string n){
 		}else{
 			perror("socket Error"); // For testing. Failed to connect.
 		}
-		// TO DO: Ask for name to confirm right person. Don't sniff me.
-		// Alternatively, I could do this at a higher level.
 	}	
+}
+
+Chat::Chat(int socket,std::string a){
+	address =a;
+	sock=socket;
+	failedState =20;
 }
 
 int Chat::sendMessage(std::string message){ 
@@ -39,9 +42,6 @@ void Chat::messageCheckLoop(){
 	while(failedState>=20){
 		rLock.unlock();
 		if((size=recv(sock, buffer, BUFFSIZE-1, 0)) >= 1) { // Check for new bytes
-			if(strcmp(buffer, "~/exit")){ // On exit.
-				failedState==1;
-			}
 			messageLock.lock();
 			message =message +buffer;
 			messageLock.unlock();
@@ -61,12 +61,10 @@ int Chat::getState(){
 
 std::string Chat::getMessage(){
 	std::string returnS;
-
 	messageLock.lock();
 	returnS= message;	// get message
 	message ="";		// clear message;
 	messageLock.unlock();
-
 	return returnS;
 }
 

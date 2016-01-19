@@ -5,13 +5,15 @@ MainWindow::MainWindow():
 	userFrame(Gtk::ORIENTATION_VERTICAL),
 	options(Gtk::ORIENTATION_HORIZONTAL),
 	feedFrame(Gtk::ORIENTATION_VERTICAL),
-	logInB("log in"){
+	logInB("log in")
+	{
 	// **************** window stuff ******************************
 	set_default_size(300, 300); // size
 	set_border_width(5);// border
 
 	add(frame);
 	frame.set_show_tabs(false);
+
 	// ***************** Login Layout ****************************
 	//* Username
 	userL.set_label("User Name");
@@ -106,10 +108,10 @@ void MainWindow::connectH(){
 	 - Checks for
 */
 bool MainWindow::update(){
-	std::string temp=host->getMessages(current);
+	//std::string temp=host->getMessages(current);
 	// Check for new connections!
-	if(temp!=""){
-		ConnectWindow *newBox = new ConnectWindow(host,current,temp);
+	if(!host->checkCurrent()){
+		ConnectWindow *newBox = new ConnectWindow(host->getClient());
 		newBox->show();
 		chatBoxes.push_back(newBox);
 		current++;
