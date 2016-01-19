@@ -8,16 +8,16 @@ Data with the Chat Server.
 #define chat_h
 
 #ifdef _WIN32
- #include <stdio.h>
- #include <winsock2.h>
- #include <stdlib.h>
+	 #include <stdio.h>
+	 #include <winsock2.h>
+	 #include <stdlib.h>
 #elif __linux__
- #include <stdio.h>
- #include <sys/socket.h>
- #include <arpa/inet.h>
- #include <stdlib.h>
- #include <unistd.h>
- #include <netinet/in.h>
+	 #include <stdio.h>
+	 #include <sys/socket.h>
+	 #include <arpa/inet.h>
+	 #include <stdlib.h>
+	 #include <unistd.h>
+	 #include <netinet/in.h>
 #endif
 
 #include <mutex>

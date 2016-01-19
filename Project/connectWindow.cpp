@@ -157,7 +157,7 @@ bool ConnectWindow::update(){
 	}
 	return true;
 }
-// ****************************************************
+
 ConnectWindow::~ConnectWindow(){
 	if (client!=NULL){
 		client->endMessageCheckLoop(); // Stoping the loop

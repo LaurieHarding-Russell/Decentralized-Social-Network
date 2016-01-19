@@ -12,13 +12,43 @@
 
 class ConnectWindow : public Gtk::Window{
 public:
+	/*
+	Constructor
+	Purpose: Create a ConnectWindow. 
+	Returns: NA
+	*/
 	ConnectWindow();
+	/*
+	Constructor
+	Purpose: Create a ConnectWindow with a connection useing a Chat object. 
+	Returns: NA
+	*/
 	ConnectWindow(Chat* c);
+	/*
+	Destructor
+	Purpose: Create a ConnectWindow with a connection useing a Chat object. 
+	Returns: NA
+	*/
 	virtual ~ConnectWindow();
 protected:
 	//Signal Handlers
+	/*
+	update
+	Purpose: Deals timer event. Checks for new message etc.
+	Returns: NA
+	*/
 	void connect();
+	/*
+	sendMessage
+	Purpose: Sends Text from conversation TextView through the Chat Object.
+	Returns: NA
+	*/
 	void sendMessage();
+	/*
+	update
+	Purpose: Deals timer event. Gets Messages and processes them.
+	Returns: NA
+	*/
 	bool update();
 	// Layout
 	Gtk::Notebook frame; // Switch pages
