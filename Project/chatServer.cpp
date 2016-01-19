@@ -4,30 +4,6 @@ ChatServer::ChatServer(){
 	current =0; // current number of connections
 	lastUpdated=0;
 }
-/*
-The function polls a single sockets recieved data.
-*/
-void ChatServer::handleClient(int sock, int me) {
-	char buffer[BUFFSIZE];
-	sConnected[me] =true;
-	int size=0;
-	rLock.lock();
-	while(sConnected[me]&&running){ // Runs while server is running and client connected.
-		rLock.unlock();
-		if ((size = recv(sock, buffer, BUFFSIZE, 0)) > 0) { // Check for data
-			messageLock[me].lock();
-			messages[me]= messages[me]+buffer; // Put in buffer.
-			messageLock[me].unlock();
-		}
-		rLock.lock();
-	}
-	rLock.unlock();
-#ifdef _WIN32
-	closesocket(sock);
-#elif __linux__
-	close(sock);	// Disconnect
-#endif
-}
 
 void ChatServer::serverLoop(){
 	// time interval to wait for accepts. Polling so don't wait.
@@ -76,9 +52,6 @@ void ChatServer::serverLoop(){
 	#elif __linux__
 		close(serverSock);	// Disconnect
 	#endif
-	for(int lp1 =0; lp1!=current;lp1++){
-		threadIds[lp1].join();
-	}
 }
 
 void ChatServer::stopServer(){

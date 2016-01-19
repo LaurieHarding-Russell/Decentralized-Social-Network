@@ -77,16 +77,12 @@ public:
 	*/
 	~ChatServer();
 private:
-	std::mutex rLock;						// Locks running. 
+	std::mutex rLock;						// Lock for running. 
 	bool running;							// Is the Host running?	
-	void handleClient(int sock, int me);	// threaded
-	struct sockaddr_in server, client;
+	struct sockaddr_in server, client;		// socket info
 	int serverSock,clientSockInit;
-	std::thread threadIds[MAXCONNECT];		// One thread per conversation
-	int clientSock[MAXCONNECT];
-	std::string messages[MAXCONNECT];
-	std::mutex messageLock[MAXCONNECT];
-	Chat* clients[MAXCONNECT];
+
+	Chat* clients[MAXCONNECT];				//
 	bool sConnected[MAXCONNECT];			// If the socket is connected client
 	int current;// Current connection number
 	int lastUpdated;
