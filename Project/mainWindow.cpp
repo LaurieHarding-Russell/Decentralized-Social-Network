@@ -130,14 +130,11 @@ void MainWindow::logoutH(){ // Very Broken
 	//chatBoxes.clear();
 	myUsername="";
 	myPassword="";
-	std::cout << "Release the magic imps\n";
 	host->stopServer(); // Need a way to stop accept connection...
 	hostThread.join();	// can't join until accept connection is cancelled.
-	std::cout << "Released Mr. H\n";
 	// detach update timer
 	updateHandler.disconnect();
 	delete host;			// Will find a work arround but... a good OS will grab back the memory.
-	std::cout << "Dragons fed..." <<std::endl<<std::endl;
 	set_title("Anti-Social Network");
 	frame.set_current_page(0);
 	loggedIn=false;

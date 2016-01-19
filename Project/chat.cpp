@@ -1,3 +1,6 @@
+/* 
+Chat.cpp 
+*/
 #include "chat.h"
 
 Chat::Chat(std::string a){

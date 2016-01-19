@@ -129,8 +129,6 @@ void ConnectWindow::connect(){
 		sigc::slot<bool>mySlot = sigc::mem_fun(*this,&ConnectWindow::update);
 		Glib::signal_timeout().connect(mySlot, 100); // 10x a second
 		frame.set_current_page(1);
-		// ********* Send user page *********
-		int check=client->sendMessage("~/name");
 	}else{
 		std::cout << "Failed to connect"<<std::endl;
 		delete client;
