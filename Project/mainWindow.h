@@ -24,47 +24,17 @@ struct Post{
 class MainWindow : public Gtk::Window{
 
 public:
-	/*
-	Constructor
-	Purpose: Creates the Main window.
-	Returns: NA
-	*/
 	MainWindow();
-	/*
-	Destructor
-	Purpose: destroys the main window
-	Returns: NA
-	*/
 	virtual ~MainWindow();
 
 protected:
 	//**** Signal handlers**** 
-	/*
-	logIn
-	Purpose: It input from username and password and logs it in.
-	Returns: NA
-	*/
 	void logIn();
 	// Userpage
-	/*
-	connectH
-	Purpose: Creates a new connectWindow.
-	Returns: NA
-	*/
 	void connectH();
-	/*
-	logoutH
-	Purpose: logout the user.
-	Returns: NA
-	*/
 	void logoutH();
 	//timer
-	/*
-	update
-	Purpose: Checks for new connections.
-	Returns: NA
-	*/
-	void update();
+	bool update();
 	int current=0;
 	//Member widgets:
 	Gtk::Notebook frame; // Switch pages

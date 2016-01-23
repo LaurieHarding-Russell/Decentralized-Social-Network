@@ -103,7 +103,11 @@ void MainWindow::connectH(){
 	chatBoxes.push_back(newBox);
 }
 
-void MainWindow::update(){
+/* 
+	 - Checks for new connections
+	 - Checks for
+*/
+bool MainWindow::update(){
 	//std::string temp=host->getMessages(current);
 	// Check for new connections!
 	if(!host->checkCurrent()){
@@ -116,6 +120,8 @@ void MainWindow::update(){
 	if(feedBuffer.empty()){
 		//	chatBoxes;
 	}
+
+	return true;
 }
 /*
 	Logs out, disconnects host. Should del

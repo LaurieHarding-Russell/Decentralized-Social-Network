@@ -23,7 +23,7 @@ Chat::Chat(std::string a){
 Chat::Chat(int socket,std::string a){
 	address =a;
 	sock=socket;
-	failedState =20;	// assuming socket is properly connected
+	failedState =20;
 }
 
 int Chat::sendMessage(std::string message){ 
@@ -79,8 +79,8 @@ void Chat::endMessageCheckLoop(){
 
 Chat::~Chat(){
 	#ifdef _WIN32
-		closesocket(sock);
+	closesocket(sock);
 	#elif __linux__
-		close(sock);	// Disconnect
+	close(sock);	// Disconnect
 	#endif
 }
