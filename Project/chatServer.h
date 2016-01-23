@@ -44,31 +44,31 @@ public:
 	Purpose: To constantly poll for new connections.
 	Returns: NA
 	*/
-	void serverLoop();
+	virtual void serverLoop();
 	/*
 	stopServer
 	Purpose: To let the serverLoop exit.
 	Returns: NA
 	*/
-	void stopServer();
+	virtual void stopServer();
 	/*
 	stopServer
 	Purpose: A getter function for the bool running
 	Returns: running
 	*/
-	bool serverRunning(); // Is the server running?
+	virtual bool serverRunning(); // Is the server running?
 	/*
 	getCurrent
 	Purpose: Gets current connection.
 	Returns: NA
 	*/
-	bool checkCurrent();
+	virtual bool checkCurrent();
 	/*
 	getClient
 	Purpose: Gets the next Chat object
 	Returns: NA
 	*/
-	Chat* getClient();
+	virtual Chat* getClient();
 
 	/*
 	Destructor

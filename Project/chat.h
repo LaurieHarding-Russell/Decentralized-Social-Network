@@ -54,7 +54,7 @@ class Chat{
 	Purpose: To safely destroy the chat object
 	Returns: Current failedState value.
 	*/
-	int sendMessage(std::string message);
+	virtual int sendMessage(std::string message);
 	
 	/*
 	messageCheckLoop
@@ -63,28 +63,28 @@ class Chat{
 	Note: Any commands that need to be processed in this loop should start with
 	the prefix ~/
 	*/
-	void messageCheckLoop();
+	virtual void messageCheckLoop();
 	
 	/*
 	getState
 	Purpose: to get the value of failedState
 	Returns: failedState
 	*/
-	int getState();
+	virtual int getState();
 	
 	/*
 	getMessage
 	Purpose: to get the value of message and clear it.
 	Returns: message
 	*/
-	std::string getMessage();
+	virtual std::string getMessage();
 	
 	/*
 	endMessageCheckLoop
 	Purpose: To let the messageCheckLoop exit.
 	Returns: NA
 	*/
-	void endMessageCheckLoop();
+	virtual void endMessageCheckLoop();
 
 private:
 	// Sock Stuff
