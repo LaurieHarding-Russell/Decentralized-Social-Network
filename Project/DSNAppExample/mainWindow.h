@@ -3,8 +3,8 @@
 
 #include <list>
 // chat
-#include "chatServer.h"
-#include "chat.h"
+#include "DSNLib/chatServer.h"
+#include "DSNLib/chat.h"
 #include <thread>
 #include <ctime>
 
@@ -28,7 +28,7 @@ public:
 	virtual ~MainWindow();
 
 protected:
-	//**** Signal handlers**** 
+	//**** Signal handlers****
 	void logIn();
 	// Userpage
 	void connectH();
@@ -50,21 +50,21 @@ protected:
 
 	// ******* User Page **********
 	std::string userPhotoName;
-	Gtk::Label userName;	// 
-	Gtk::Image userPhoto; // 
-	Gtk::Box options;		 // 
-	Gtk::Button connect,cellForward,finder,logout; // 
+	Gtk::Label userName;	//
+	Gtk::Image userPhoto; //
+	Gtk::Box options;		 //
+	Gtk::Button connect,cellForward,finder,logout; //
 	Gtk::ScrolledWindow feedScroll;
 	Gtk::Box feedFrame;
-	Gtk::Label otherStuff; // 
+	Gtk::Label otherStuff; //
 	std::list<Post*> feedBuffer;
  private:
 	ChatServer* host; // Start host right away.
 	ConnectWindow chatBox;
-	 
+
 	std::list<ConnectWindow*> chatBoxes;
 	Chat* clients[MAXCONNECT];
-	 
+
 	std::thread hostThread;
 	std::thread clientThreads[MAXCONNECT];
 

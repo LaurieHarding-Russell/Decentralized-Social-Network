@@ -1,3 +1,5 @@
+// I probably broke this for windows.
+
 for windows
 https://wiki.gnome.org/Projects/gtkmm/MSWindows
 
@@ -6,4 +8,4 @@ addisional commands
  pacman -S make
 
 After you make the project throw it into the wBin folder before running it.
-The above is meant to be temperary solution. 
+The above is meant to be temperary solution.

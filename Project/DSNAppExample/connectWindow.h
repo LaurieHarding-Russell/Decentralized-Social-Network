@@ -4,8 +4,8 @@
 #include <gtkmm.h>
 #include <gtkmm/window.h>
 #include <thread>
-#include "chat.h"
-#include "chatServer.h"
+#include "DSNLib/chat.h"
+#include "DSNLib/chatServer.h"
 #include <string>
 
 #include <iostream>	// For testing purposes only.

@@ -16,7 +16,7 @@ ConnectWindow::ConnectWindow():
 	ipAddressE.set_max_length(26);
 	ipAddressE.select_region(0,50);
 	connectFrame.pack_start(ipAddressE,Gtk::PACK_SHRINK);
-  
+
 	// Name
 	nameL.set_label("name");
 	connectFrame.pack_start(nameL,Gtk::PACK_SHRINK);
@@ -50,8 +50,8 @@ ConnectWindow::ConnectWindow():
 	//********* User Page Layout *****************
 	// user photo
 	userPhotoName = "";
-	// <-------  Load in photo name here 
-  
+	// <-------  Load in photo name here
+
 	if(userPhotoName!=""){
 	// userPhoto = Gtk::Image().get_pixbuf();
 	}
@@ -59,13 +59,13 @@ ConnectWindow::ConnectWindow():
 
 	userName.set_label("Username");
 	userPFrame.pack_start(userName);
- 
+
 	// New's Feed *Dynamically Generated*
 	feedScroll.set_border_width(5);
 	feedScroll.add(feedFrame);
 	feedScroll.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	userPFrame.pack_start(feedScroll);
-  
+
 	//********************************************/
 	frame.append_page(connectFrame, "Connect");
 	frame.append_page(talkFrame, "Message");
@@ -107,7 +107,7 @@ userPFrame(Gtk::ORIENTATION_VERTICAL){
 	// Connection Part
 	client=c;
 	clientThread = std::thread(&Chat::messageCheckLoop,client);
-	
+
 	name = "bla";
 	ip = "bla";
 
