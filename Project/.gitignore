@@ -1,3 +1,10 @@
+#DSN ignores
+/DSNLib
+
+
+
+
+
 # Compiled Object files
 *.slo
 *.lo
@@ -7,20 +14,20 @@
 # Precompiled Headers
 *.gch
 *.pch
-	
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
 
 # Fortran module files
 *.mod
-	
+
 # Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
-	
+
 # Executables
 *.exe
 *.out
@@ -153,7 +160,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
