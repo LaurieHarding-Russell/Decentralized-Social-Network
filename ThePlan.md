@@ -1,6 +1,7 @@
 Long Term Goals.
 
 DSNApiLibrary
+  Make the code less disgusting.
   Add encryption. SSL, one touch pad, etc.
   Find a way around the port forwarding problem.
 
@@ -9,16 +10,5 @@ DSNApiLibrary
   json payloads
   Look into how this new library approach effects windows...
 
-
-Client
-  Finish the C++ GUI
-  Create a Java/ Angular version?
-
-  Maybe,
-  Create a phone App.
-  video streaming, pictures.
-
-
 Maybe's:
-Split the ServerLib and the App into seperate repos.
 3rd party look up server.
