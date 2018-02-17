@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "Chat",
+    srcs = ["DSNApiLibrary/chat.cpp"],
+    hdrs = ["DSNApiLibrary/chat.h"],
+    copts = ["-g", "-std=c++11", "-lpthread", "-fPIC"]
+)
+
+cc_library(
+    name = "ChatServer",
+    srcs = ["DSNApiLibrary/chatServer.cpp"],
+    hdrs = ["DSNApiLibrary/chatServer.h"],
+    copts = ["-g", "-std=c++11", "-lpthread", "-fPIC"]
+)
