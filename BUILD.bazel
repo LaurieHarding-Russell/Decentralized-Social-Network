@@ -5,6 +5,7 @@ cc_library(
     srcs = ["DSNApiLibrary/chat.cpp"],
     hdrs = ["DSNApiLibrary/chat.h"],
     copts = ["-g", "-std=c++11", "-lpthread", "-fPIC"]
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -12,4 +13,5 @@ cc_library(
     srcs = ["DSNApiLibrary/chatServer.cpp"],
     hdrs = ["DSNApiLibrary/chatServer.h"],
     copts = ["-g", "-std=c++11", "-lpthread", "-fPIC"]
+    visibility = ["//visibility:public"],
 )
