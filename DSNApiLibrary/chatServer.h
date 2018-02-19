@@ -1,5 +1,5 @@
 /*
-The ChatServer watches for new connections and 
+The ChatServer watches for new connections and
 connect to them.
 */
 
@@ -77,8 +77,8 @@ public:
 	*/
 	~ChatServer();
 private:
-	std::mutex rLock;						// Lock for running. 
-	bool running;							// Is the Host running?	
+	std::mutex rLock;						// Lock for running.
+	bool running;							// Is the Host running?
 	struct sockaddr_in server, client;		// socket info
 	int serverSock,clientSockInit;
 
