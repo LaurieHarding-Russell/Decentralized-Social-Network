@@ -1,11 +1,11 @@
-#include "chatServer.h"
+#include "Server.h"
 
-ChatServer::ChatServer(){
-	current =0; // current number of connections
+Server::Server(){
+	current =0;
 	lastUpdated=0;
 }
 
-void ChatServer::serverLoop(){
+void Server::serverLoop(){
 	// time interval to wait for accepts. Polling so don't wait.
 	struct timeval tv;
 	fd_set readfds;
@@ -50,38 +50,37 @@ void ChatServer::serverLoop(){
 	#ifdef _WIN32
 		closesocket(serverSock);
 	#elif __linux__
-		close(serverSock);	// Disconnect
+		close(serverSock);
 	#endif
 }
 
-void ChatServer::stopServer(){
+void Server::stopServer(){
 	rLock.lock();
 	running = false;
-	// Stop the accept command by closeing the serverSock on windows.
-	// Not very pretty... but it works
 	#ifdef _WIN32
 		closesocket(serverSock);
 	#endif
 	rLock.unlock();
 }
 
-bool ChatServer::serverRunning(){
+bool Server::serverRunning(){
 	bool temp;
 	rLock.lock();
 	temp = running;
 	rLock.unlock();
 	return temp;
 }
-bool ChatServer::checkCurrent(){
+
+bool Server::checkCurrent(){
 	return current==lastUpdated;
 }
 
-Chat* ChatServer::getClient(){
+Chat* Server::getClient(){
 	lastUpdated++;
 	return clients[lastUpdated-1];
 }
 
-ChatServer::~ChatServer(){
+Server::~Server(){
 	for(int lpC=lastUpdated;lpC!=current;lpC++){
 		delete clients[lpC];
 	}

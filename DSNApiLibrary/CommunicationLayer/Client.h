@@ -1,11 +1,11 @@
 /* 
-The Chat Class is meant to initiate a connection with a chat server.
-Once a connection is established, the chat object sends and recieves 
-Data with the Chat Server.
+The Client Class is meant to initiate a connection with a Client server.
+Once a connection is established, the Client object sends and recieves 
+Data with the Client Server.
 */
 
-#ifndef chat_h
-#define chat_h
+#ifndef Client_h
+#define Client_h
 
 #ifdef _WIN32
  #include <stdio.h>
@@ -24,37 +24,44 @@ Data with the Chat Server.
 #include <string.h>
 
 #define BUFFSIZE 128
-#define HOSTSOCK 8000	 // This is the default socket being used by the chatServer.
+#define HOSTSOCK 8000	 // This is the default socket being used by the ClientServer.
 
-class Chat{
+// FIXME, Think about where to put this. Maybe in some sort of util file?
+enum class ConnectionState { NotInitialized, ConnectionFailed, OK, messageFailedToSend};
+
+bool ConnectonStateConnected(ConnectionState value) {
+	return ConnectionState::NotInitialized != value || ConnectionState::ConnectionFailed != value;
+}
+
+class Client{
  public:
 	/*
 	Constructor
-	Purpose: To setup a connection with a chatServer object using an address
+	Purpose: To setup a connection with a ClientServer object using an address
 	Returns: NA
 	*/
-	Chat(std::string address);
+	Client(std::string address);
 
 	/*
 	Constructor
-	Purpose: To accept a connection with a chatServer object using an existing socket
+	Purpose: To accept a connection with a ClientServer object using an existing socket
 	Returns: NA
 	*/
-	Chat(int socket,std::string address);
+	Client(int socket,std::string address);
 
 	/*
 	Destructor
-	Purpose: To safely destroy the chat object
+	Purpose: To safely destroy the Client object
 	Returns: NA
 	*/
-	~Chat();
+	~Client();
 	
 	/*
 	sendMessage
-	Purpose: To safely destroy the chat object
-	Returns: Current failedState value.
+	Purpose: To safely destroy the Client object
+	Returns: Current failedState.
 	*/
-	virtual int sendMessage(std::string message);
+	virtual ConnectionState sendMessage(std::string message);
 	
 	/*
 	messageCheckLoop
@@ -70,7 +77,7 @@ class Chat{
 	Purpose: to get the value of failedState
 	Returns: failedState
 	*/
-	virtual int getState();
+	virtual ConnectionState getState();
 	
 	/*
 	getMessage
@@ -91,15 +98,8 @@ private:
 	 struct sockaddr_in client;
 	 std::string address;		// IP address of user we are connecting to.
 	 int sock;					// The connecting Socket
-	 /*
-	 failedState Values
-	 0:The constructor failed to create 
-	 1: Connection Failed
-	 20: Everythings working.
-	 30: Last message sent failed to send all of its bytes
-	 Note: New Fatal errors should be bellow 20.
-	 */
-	 int failedState;
+
+	 ConnectionState failedState;
 	 std::mutex rLock;			// lock for failedState
 	 // Message stuff
 	 std::mutex messageLock;	// Locks the message string

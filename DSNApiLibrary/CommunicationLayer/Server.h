@@ -1,10 +1,10 @@
 /*
-The ChatServer watches for new connections and
+The Server watches for new connections and
 connect to them.
 */
 
-#ifndef chatServer_h
-#define chatServer_h
+#ifndef Server_h
+#define Server_h
 
 #ifdef _WIN32
  #include <stdio.h>
@@ -26,19 +26,19 @@ connect to them.
 #include "chat.h"
 
 #define BUFFSIZE 128
-#define HOSTSOCK 8000	 // Hope that it isn't being used. Needs researching.
+#define HOSTSOCK 8000
 
 // No one talks to more than a 100 people at once... right?
 #define MAXCONNECT 100
 
-class ChatServer{
+class Server{
 public:
 	/*
 	Constructor
-	Purpose: To setup a connection with a chatServer object.
+	Purpose: To setup a connection with a Server object.
 	Returns: NA
 	*/
-	ChatServer();
+	Server();
 	/*
 	serverLoop
 	Purpose: To constantly poll for new connections.
@@ -75,7 +75,7 @@ public:
 	Purpose: To safely destroy the chat object
 	Returns: NA
 	*/
-	~ChatServer();
+	~Server();
 private:
 	std::mutex rLock;						// Lock for running.
 	bool running;							// Is the Host running?
