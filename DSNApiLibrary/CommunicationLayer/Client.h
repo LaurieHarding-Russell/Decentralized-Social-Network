@@ -27,9 +27,14 @@ Data with the Client Server.
 #define HOSTSOCK 8000	 // This is the default socket being used by the ClientServer.
 
 // FIXME, Think about where to put this. Maybe in some sort of util file?
-enum class ConnectionState { NotInitialized, ConnectionFailed, OK, messageFailedToSend};
+enum class ConnectionState { 
+	NotInitialized, 
+	ConnectionFailed, 
+	OK, 
+	messageFailedToSend
+};
 
-bool ConnectonStateConnected(ConnectionState value) {
+bool ConnectonStateValid(ConnectionState value) {
 	return ConnectionState::NotInitialized != value || ConnectionState::ConnectionFailed != value;
 }
 
@@ -67,8 +72,7 @@ class Client{
 	messageCheckLoop
 	Purpose: To constantly poll for new messeges.
 	Returns: NA
-	Note: Any commands that need to be processed in this loop should start with
-	the prefix ~/
+	Note: 
 	*/
 	virtual void messageCheckLoop();
 	
@@ -100,7 +104,7 @@ private:
 	 int sock;					// The connecting Socket
 
 	 ConnectionState failedState;
-	 std::mutex rLock;			// lock for failedState
+	 std::mutex stateLock;			// lock for failedState
 	 // Message stuff
 	 std::mutex messageLock;	// Locks the message string
 	 std::string message;		// Stores the recieved messages.

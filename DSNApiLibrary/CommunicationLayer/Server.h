@@ -23,12 +23,12 @@ connect to them.
 #include <mutex>
 #include <string.h>
 #include <list>
-#include "chat.h"
+#include "Client.h"
 
 #define BUFFSIZE 128
 #define HOSTSOCK 8000
 
-// No one talks to more than a 100 people at once... right?
+// FIXME
 #define MAXCONNECT 100
 
 class Server{
@@ -65,24 +65,25 @@ public:
 	virtual bool checkCurrent();
 	/*
 	getClient
-	Purpose: Gets the next Chat object
+	Purpose: Gets the next Client object
 	Returns: NA
 	*/
-	virtual Chat* getClient();
+	virtual Client* getClient();
 
 	/*
 	Destructor
-	Purpose: To safely destroy the chat object
+	Purpose: To safely destroy the Client object
 	Returns: NA
 	*/
 	~Server();
 private:
-	std::mutex rLock;						// Lock for running.
-	bool running;							// Is the Host running?
+	//FIXME, Can't get atomic to work. Incomplete type. going back to locking.
+	std::mutex acceptMessagesLock;
+	bool acceptMessages;		// Is the Host running?
 	struct sockaddr_in server, client;		// socket info
 	int serverSock,clientSockInit;
 
-	Chat* clients[MAXCONNECT];				//
+	Client* clients[MAXCONNECT];
 	bool sConnected[MAXCONNECT];			// If the socket is connected client
 	int current;// Current connection number
 	int lastUpdated;
